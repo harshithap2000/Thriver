@@ -1,0 +1,23 @@
+# Logs
+logs
+*.log
+pnpm-debug.log*
+
+node_modules
+dist
+dist-ssr
+coverage
+*.local
+.env
+
+# Playwright
+test-results
+playwright-report
+blob-report
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.sw?
