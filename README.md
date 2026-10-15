@@ -14,7 +14,7 @@ A scalable React starter built with **Vite**, **React 19**, **TypeScript (strict
 
 ## Getting started
 
-Requires Node 22+ (see `.nvmrc`) and pnpm (`corepack enable`).
+Requires Node 24 LTS (or 22.22.2+; see `.nvmrc`) and pnpm (`corepack enable`).
 
 ```bash
 pnpm install
