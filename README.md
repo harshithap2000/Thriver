@@ -49,6 +49,7 @@ src/
       hooks/          React Query hooks and query keys
       types.ts        Zod schemas and inferred types
       index.ts        Public API: the only file other modules may import
+    splash/         Animated splash screen shown when the app opens
     theme/          Example feature (client state with Zustand)
   pages/          Thin route components that compose features (default export, lazy-loaded)
   shared/         Feature-agnostic code

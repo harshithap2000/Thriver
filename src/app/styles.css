@@ -8,4 +8,43 @@
   --color-brand-500: oklch(0.65 0.15 165);
   --color-brand-600: oklch(0.56 0.14 165);
   --color-brand-700: oklch(0.48 0.12 165);
+
+  /* Splash screen */
+  --color-splash-bg: #fbffd5;
+  --color-splash-ink: #6b6862;
+  --font-splash: 'Jost', ui-sans-serif, system-ui, sans-serif;
+}
+
+@keyframes splash-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes splash-drive-in {
+  from {
+    opacity: 0;
+    transform: translateX(60vw);
+  }
+}
+
+@keyframes splash-bob {
+  to {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes splash-puff {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.8);
+  }
+  70% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translate(18px, -6px) scale(1.15);
+  }
 }
