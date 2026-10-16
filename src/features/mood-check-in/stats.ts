@@ -1,13 +1,8 @@
+import { addDays, dateKey } from '@/shared/utils/date'
+
 import { moods, type MoodId } from './moods'
-import { dateKey } from './useMoodStore'
 
 type CheckIns = Record<string, MoodId>
-
-const addDays = (date: Date, days: number) => {
-  const d = new Date(date)
-  d.setDate(d.getDate() + days)
-  return d
-}
 
 /** The last `count` days ending with `today`, oldest first. */
 export function lastNDays(count: number, today = new Date()) {

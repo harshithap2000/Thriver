@@ -2,7 +2,9 @@ import { cn } from '@/shared/utils/cn'
 
 import { moods } from '../moods'
 import { lastNDays } from '../stats'
-import { dateKey, useMoodStore } from '../useMoodStore'
+import { dateKey } from '@/shared/utils/date'
+
+import { useMoodStore } from '../useMoodStore'
 import { MoodFace } from './MoodFace'
 
 const weekday = new Intl.DateTimeFormat(undefined, { weekday: 'short' })

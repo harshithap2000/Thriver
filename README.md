@@ -49,7 +49,9 @@ src/
       hooks/          React Query hooks and query keys
       types.ts        Zod schemas and inferred types
       index.ts        Public API: the only file other modules may import
+    appointments/   Appointments calendar: month view, day list, upcoming, add/delete
     home/           Home screen sections (greeting, activities, focus, recommendations)
+    medication/     Medications with daily dose times and a today checklist
     mood-check-in/  Daily mood check-in, streak/stats and weekly mood (Zustand, persisted)
     profile/        Profile header with editable display name (Zustand, persisted)
     splash/         Animated splash screen shown when the app opens

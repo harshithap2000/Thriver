@@ -1,12 +1,13 @@
 import type { ComponentType, SVGProps } from 'react'
 import { NavLink, Outlet } from 'react-router'
 
-import { HomeIcon, JournalIcon, ProfileIcon, SearchIcon } from '@/shared/ui/icons'
+import { CalendarIcon, HomeIcon, JournalIcon, PillIcon, ProfileIcon } from '@/shared/ui/icons'
 import { cn } from '@/shared/utils/cn'
 
 const tabs: Array<{ to: string; label: string; Icon: ComponentType<SVGProps<SVGSVGElement>> }> = [
   { to: '/', label: 'Home', Icon: HomeIcon },
-  { to: '/explore', label: 'Explore', Icon: SearchIcon },
+  { to: '/appointments', label: 'Calendar', Icon: CalendarIcon },
+  { to: '/medication', label: 'Medication', Icon: PillIcon },
   { to: '/journal', label: 'Journal', Icon: JournalIcon },
   { to: '/profile', label: 'Profile', Icon: ProfileIcon },
 ]
@@ -23,7 +24,7 @@ export function AppShell() {
         aria-label="Main"
         className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md rounded-t-3xl bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_24px_rgba(35,68,63,0.08)] backdrop-blur"
       >
-        <ul className="grid grid-cols-4">
+        <ul className="grid grid-cols-5">
           {tabs.map(({ to, label, Icon }) => (
             <li key={to}>
               <NavLink

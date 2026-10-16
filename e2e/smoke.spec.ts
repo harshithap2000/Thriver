@@ -26,7 +26,25 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
   await mainNav.getByRole('link', { name: 'Home' }).click()
   await expect(page.getByText(/, Sam$/)).toBeVisible()
 
-  await mainNav.getByRole('link', { name: 'Explore' }).click()
+  await mainNav.getByRole('link', { name: 'Calendar' }).click()
+  await page.getByRole('button', { name: 'Add' }).click()
+  await page.getByLabel('What is it?').fill('Therapy session')
+  await page.getByRole('button', { name: 'Save appointment' }).click()
+  await expect(page.getByRole('heading', { name: 'Therapy session' })).toBeVisible()
+
+  await mainNav.getByRole('link', { name: 'Medication' }).click()
+  await page.getByRole('button', { name: 'Add' }).click()
+  await page.getByLabel('Medication name').fill('Vitamin D')
+  await page.getByRole('button', { name: 'Save medication' }).click()
+  await page.getByRole('button', { name: /^Vitamin D at .*: not taken$/ }).click()
+  await expect(page.getByText(/All done for today/)).toBeVisible()
+
+  // Reload: everything above is persisted on the device.
+  await page.reload()
+  await expect(page.getByRole('button', { name: /^Vitamin D at .*: taken$/ })).toBeVisible()
+
+  await mainNav.getByRole('link', { name: 'Home' }).click()
+  await page.getByRole('link', { name: 'See all' }).click()
   await page.getByRole('link', { name: /example data feature/ }).click()
   await expect(page.getByRole('heading', { name: 'mocked post' })).toBeVisible()
 })

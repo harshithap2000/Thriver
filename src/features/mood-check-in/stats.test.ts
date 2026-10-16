@@ -1,5 +1,5 @@
 import { currentStreak, lastNDays, mostFrequentMood } from './stats'
-import { dateKey } from './useMoodStore'
+import { dateKey } from '@/shared/utils/date'
 
 const today = new Date(2026, 9, 16) // 16 Oct 2026
 const daysAgo = (n: number) => dateKey(new Date(2026, 9, 16 - n))

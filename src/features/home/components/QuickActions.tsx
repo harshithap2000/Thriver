@@ -15,28 +15,28 @@ interface Action {
 const actions: Action[] = [
   {
     label: 'Meditate',
-    to: '/explore?category=meditate',
+    to: '/activities?category=meditate',
     Icon: SproutIcon,
     tile: 'bg-meditate',
     ink: 'text-meditate-ink',
   },
   {
     label: 'Move',
-    to: '/explore?category=move',
+    to: '/activities?category=move',
     Icon: HeartIcon,
     tile: 'bg-move',
     ink: 'text-move-ink',
   },
   {
     label: 'Sleep',
-    to: '/explore?category=sleep',
+    to: '/activities?category=sleep',
     Icon: MoonIcon,
     tile: 'bg-sleep',
     ink: 'text-sleep-ink',
   },
   {
     label: 'Reflect',
-    to: '/explore?category=reflect',
+    to: '/activities?category=reflect',
     Icon: SunIcon,
     tile: 'bg-reflect',
     ink: 'text-reflect-ink',

@@ -16,7 +16,9 @@ export const routes: RouteObject[] = [
     ErrorBoundary: RouteError,
     children: [
       { index: true, lazy: lazyPage(() => import('@/pages/HomePage')) },
-      { path: 'explore', lazy: lazyPage(() => import('@/pages/ExplorePage')) },
+      { path: 'appointments', lazy: lazyPage(() => import('@/pages/AppointmentsPage')) },
+      { path: 'medication', lazy: lazyPage(() => import('@/pages/MedicationPage')) },
+      { path: 'activities', lazy: lazyPage(() => import('@/pages/ActivitiesPage')) },
       { path: 'journal', lazy: lazyPage(() => import('@/pages/JournalPage')) },
       { path: 'profile', lazy: lazyPage(() => import('@/pages/ProfilePage')) },
       { path: 'posts', lazy: lazyPage(() => import('@/pages/PostsPage')) },

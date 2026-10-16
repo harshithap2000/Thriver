@@ -2,7 +2,9 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { lastNDays } from '../stats'
-import { dateKey, useMoodStore } from '../useMoodStore'
+import { dateKey } from '@/shared/utils/date'
+
+import { useMoodStore } from '../useMoodStore'
 import { CheckInStats } from './CheckInStats'
 import { ClearHistoryButton } from './ClearHistoryButton'
 import { MoodWeek } from './MoodWeek'

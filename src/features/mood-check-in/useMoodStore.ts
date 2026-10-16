@@ -1,11 +1,9 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-import type { MoodId } from './moods'
+import { dateKey } from '@/shared/utils/date'
 
-/** Local calendar date as YYYY-MM-DD. */
-export const dateKey = (date = new Date()) =>
-  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+import type { MoodId } from './moods'
 
 interface MoodState {
   /** One check-in per day, keyed by date. */

@@ -18,7 +18,7 @@ export function FocusCard() {
           brighter days
         </h2>
         <Link
-          to="/explore?category=meditate"
+          to="/activities?category=meditate"
           aria-label="Start today's focus"
           className="text-ink mt-auto grid size-10 place-items-center rounded-full bg-white shadow-sm transition-transform hover:translate-x-0.5"
         >

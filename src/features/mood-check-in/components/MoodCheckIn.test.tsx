@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { dateKey, useMoodStore } from '../useMoodStore'
+import { dateKey } from '@/shared/utils/date'
+
+import { useMoodStore } from '../useMoodStore'
 import { MoodCheckIn } from './MoodCheckIn'
 
 describe('MoodCheckIn', () => {

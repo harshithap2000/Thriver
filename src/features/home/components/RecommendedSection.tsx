@@ -9,7 +9,7 @@ export function RecommendedSection() {
         <h2 id="recommended-title" className="text-ink font-bold">
           Recommended for you
         </h2>
-        <Link to="/explore" className="text-ink-muted hover:text-ink text-sm font-semibold">
+        <Link to="/activities" className="text-ink-muted hover:text-ink text-sm font-semibold">
           See all
         </Link>
       </div>
