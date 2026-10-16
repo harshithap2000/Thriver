@@ -18,6 +18,7 @@ export const routes: RouteObject[] = [
       { index: true, lazy: lazyPage(() => import('@/pages/HomePage')) },
       { path: 'appointments', lazy: lazyPage(() => import('@/pages/AppointmentsPage')) },
       { path: 'medication', lazy: lazyPage(() => import('@/pages/MedicationPage')) },
+      { path: 'meditate', lazy: lazyPage(() => import('@/pages/MeditatePage')) },
       { path: 'activities', lazy: lazyPage(() => import('@/pages/ActivitiesPage')) },
       { path: 'journal', lazy: lazyPage(() => import('@/pages/JournalPage')) },
       { path: 'profile', lazy: lazyPage(() => import('@/pages/ProfilePage')) },

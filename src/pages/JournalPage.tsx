@@ -1,5 +1,5 @@
-import { PlaceholderPage } from './PlaceholderPage'
+import { JournalHub } from '@/features/journal'
 
 export default function JournalPage() {
-  return <PlaceholderPage title="Journal" />
+  return <JournalHub />
 }

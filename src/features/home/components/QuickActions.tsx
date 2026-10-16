@@ -15,7 +15,7 @@ interface Action {
 const actions: Action[] = [
   {
     label: 'Meditate',
-    to: '/activities?category=meditate',
+    to: '/meditate',
     Icon: SproutIcon,
     tile: 'bg-meditate',
     ink: 'text-meditate-ink',
@@ -36,7 +36,7 @@ const actions: Action[] = [
   },
   {
     label: 'Reflect',
-    to: '/activities?category=reflect',
+    to: '/journal',
     Icon: SunIcon,
     tile: 'bg-reflect',
     ink: 'text-reflect-ink',

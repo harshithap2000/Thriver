@@ -43,8 +43,23 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
   await page.reload()
   await expect(page.getByRole('button', { name: /^Vitamin D at .*: taken$/ })).toBeVisible()
 
+  await mainNav.getByRole('link', { name: 'Journal' }).click()
+  await page.getByRole('button', { name: 'Write freely' }).click()
+  await page.getByRole('textbox').fill('Felt calm after my walk.')
+  await page.getByRole('button', { name: 'Save entry' }).click()
+  await expect(page.getByRole('region', { name: 'Today' })).toContainText(
+    'Felt calm after my walk.',
+  )
+
   await mainNav.getByRole('link', { name: 'Home' }).click()
-  await page.getByRole('link', { name: 'See all' }).click()
+  await page.getByRole('link', { name: 'Play 5-Minute Mindful Breathing' }).click()
+  await expect(page.getByText('Breathe in')).toBeVisible()
+  await expect(page.getByText('Breathe out')).toBeVisible({ timeout: 6000 })
+  await page.getByRole('button', { name: 'End' }).click()
+  await expect(page.getByRole('heading', { name: 'Sessions' })).toBeVisible()
+
+  await mainNav.getByRole('link', { name: 'Home' }).click()
+  await page.getByRole('link', { name: 'Move' }).click()
   await page.getByRole('link', { name: /example data feature/ }).click()
   await expect(page.getByRole('heading', { name: 'mocked post' })).toBeVisible()
 })

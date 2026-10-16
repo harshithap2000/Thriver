@@ -9,7 +9,7 @@ export function RecommendedSection() {
         <h2 id="recommended-title" className="text-ink font-bold">
           Recommended for you
         </h2>
-        <Link to="/activities" className="text-ink-muted hover:text-ink text-sm font-semibold">
+        <Link to="/meditate" className="text-ink-muted hover:text-ink text-sm font-semibold">
           See all
         </Link>
       </div>
@@ -21,13 +21,13 @@ export function RecommendedSection() {
           <h3 className="text-ink leading-snug font-bold">5-Minute Mindful Breathing</h3>
           <p className="text-ink-muted mt-0.5 text-sm">A quick reset for your day</p>
         </div>
-        <button
-          type="button"
+        <Link
+          to="/meditate?session=breathing-5"
           aria-label="Play 5-Minute Mindful Breathing"
           className="bg-sleep text-sleep-ink grid size-11 shrink-0 place-items-center rounded-full transition-transform hover:scale-105 active:scale-95"
         >
           <PlayIcon className="ml-0.5 size-5" />
-        </button>
+        </Link>
       </article>
     </section>
   )
