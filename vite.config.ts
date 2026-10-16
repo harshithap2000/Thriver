@@ -6,10 +6,11 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
 import pkg from './package.json' with { type: 'json' }
+import { recordsAssistantPlugin } from './server/vitePlugin.ts'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), recordsAssistantPlugin()],
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
   },
@@ -22,7 +23,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
-    include: ['src/**/*.test.{ts,tsx}'],
+    include: ['src/**/*.test.{ts,tsx}', 'server/**/*.test.ts'],
     css: false,
   },
 })

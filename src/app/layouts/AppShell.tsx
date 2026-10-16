@@ -1,14 +1,14 @@
 import type { ComponentType, SVGProps } from 'react'
 import { NavLink, Outlet, useMatch } from 'react-router'
 
-import { CalendarIcon, HomeIcon, JournalIcon, PillIcon, ProfileIcon } from '@/shared/ui/icons'
+import { CalendarIcon, FolderIcon, HomeIcon, PillIcon, ProfileIcon } from '@/shared/ui/icons'
 import { cn } from '@/shared/utils/cn'
 
 const tabs: Array<{ to: string; label: string; Icon: ComponentType<SVGProps<SVGSVGElement>> }> = [
   { to: '/', label: 'Home', Icon: HomeIcon },
   { to: '/appointments', label: 'Calendar', Icon: CalendarIcon },
   { to: '/medication', label: 'Medication', Icon: PillIcon },
-  { to: '/journal', label: 'Journal', Icon: JournalIcon },
+  { to: '/records', label: 'Records', Icon: FolderIcon },
   { to: '/profile', label: 'Profile', Icon: ProfileIcon },
 ]
 

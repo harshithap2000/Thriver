@@ -22,6 +22,25 @@ cp .env.example .env.local   # optional; defaults are provided
 pnpm dev                     # http://localhost:5173
 ```
 
+## Records assistant (optional)
+
+The Records tab includes an assistant, powered by Claude (`claude-opus-5-5`), that can search and explain
+saved documents. It needs an Anthropic API key on the server side:
+
+```bash
+echo 'ANTHROPIC_API_KEY=sk-ant-...' >> .env.local   # never commit this; never prefix with VITE_
+pnpm dev
+```
+
+How it works: documents stay in the browser's IndexedDB. The browser runs the agent loop and calls
+`/api/records-assistant` (served by the Vite dev/preview server from `server/`), which adds the fixed
+instructions and the `read_record` tool and calls the Claude API. When Claude asks to read a record,
+the browser sends that one file back. Users are told what is shared and must agree before first use.
+Without a key, the assistant shows a "not set up yet" message and everything else works.
+
+When deploying (e.g. Netlify), the same handler in `server/recordsAssistant.ts` needs to run as a
+serverless function, and the endpoint should get authentication and rate limiting.
+
 ## Scripts
 
 | Script                         | What it does                                  |
@@ -58,6 +77,7 @@ src/
     meditation/     Guided breathing sessions with a timed player and practice stats
     move/           Guided movement routines, activity log, daily goal and week chart
     mood-check-in/  Daily mood check-in, streak/stats and weekly mood (Zustand, persisted)
+    records/        Health records saved on-device (IndexedDB) + AI records assistant
     profile/        Profile header with editable display name (Zustand, persisted)
     splash/         Animated splash screen shown when the app opens
     theme/          Dark-mode store + toggle (not currently mounted)

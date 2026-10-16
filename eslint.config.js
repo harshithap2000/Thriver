@@ -39,6 +39,10 @@ export default tseslint.config(
     },
   },
   {
+    files: ['server/**/*.ts', '*.config.ts'],
+    languageOptions: { globals: globals.node },
+  },
+  {
     // Files inside a feature may import their own internals via relative paths; tests and
     // config files are exempt from the fast-refresh rule.
     files: ['**/*.test.{ts,tsx}', 'src/test/**', 'e2e/**', '*.config.ts'],

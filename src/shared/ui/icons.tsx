@@ -192,3 +192,37 @@ export function ExternalLinkIcon(props: IconProps) {
     </svg>
   )
 }
+
+export function FolderIcon(props: IconProps) {
+  return (
+    <svg {...stroked} {...props}>
+      <path d="M3.5 7.5A2 2 0 0 1 5.5 5.5h4l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2Z" />
+      <path d="M8 13h8" />
+    </svg>
+  )
+}
+
+export function SparklesIcon(props: IconProps) {
+  return (
+    <svg {...base} fill="currentColor" {...props}>
+      <path d="M10 3.5 11.6 8a3 3 0 0 0 1.9 1.9L18 11.5l-4.5 1.6a3 3 0 0 0-1.9 1.9L10 19.5 8.4 15a3 3 0 0 0-1.9-1.9L2 11.5 6.5 9.9A3 3 0 0 0 8.4 8Z" />
+      <path d="m18.5 2.5.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7Z" />
+    </svg>
+  )
+}
+
+export function SendIcon(props: IconProps) {
+  return (
+    <svg {...base} fill="currentColor" {...props}>
+      <path d="M3.4 20.4 21 12 3.4 3.6a.7.7 0 0 0-1 .8L4.6 11H13v2H4.6l-2.2 6.6a.7.7 0 0 0 1 .8Z" />
+    </svg>
+  )
+}
+
+export function DownloadIcon(props: IconProps) {
+  return (
+    <svg {...stroked} {...props}>
+      <path d="M12 4v11M7 10.5l5 5 5-5M5 20h14" />
+    </svg>
+  )
+}

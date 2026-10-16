@@ -43,7 +43,8 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
   await page.reload()
   await expect(page.getByRole('button', { name: /^Vitamin D at .*: taken$/ })).toBeVisible()
 
-  await mainNav.getByRole('link', { name: 'Journal' }).click()
+  await mainNav.getByRole('link', { name: 'Home' }).click()
+  await page.getByRole('link', { name: 'Reflect' }).click()
   await page.getByRole('button', { name: 'Write freely' }).click()
   await page.getByRole('textbox').fill('Felt calm after my walk.')
   await page.getByRole('button', { name: 'Save entry' }).click()
@@ -84,6 +85,56 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
   await expect(page.getByText('Proud of you! 🌻')).toBeVisible()
   await mainNav.getByRole('link', { name: 'Home' }).click()
   await expect(page.getByRole('link', { name: /^Note from Mum/ })).toBeVisible()
+
+  // Records: save a PDF, then ask the assistant (Anthropic response mocked) about it
+  await mainNav.getByRole('link', { name: 'Records' }).click()
+  await page.getByRole('button', { name: 'Add' }).click()
+  await page.getByLabel('Document or photo').setInputFiles({
+    name: 'lipid-panel.pdf',
+    mimeType: 'application/pdf',
+    buffer: Buffer.from('%PDF-1.4 test document'),
+  })
+  await page.getByRole('button', { name: 'Save record' }).click()
+  await page.getByRole('link', { name: /lipid panel/ }).click()
+  await expect(page.getByRole('heading', { name: 'lipid panel' })).toBeVisible()
+
+  let turn = 0
+  let sentDocument = ''
+  await page.route('**/api/records-assistant', async (route) => {
+    const body = route.request().postDataJSON() as {
+      messages: { content: unknown }[]
+      catalog: { id: string }[]
+    }
+    turn++
+    if (turn === 1) {
+      return route.fulfill({
+        json: {
+          stop_reason: 'tool_use',
+          content: [
+            {
+              type: 'tool_use',
+              id: 't1',
+              name: 'read_record',
+              input: { record_id: body.catalog[0]!.id },
+            },
+          ],
+        },
+      })
+    }
+    const results = body.messages.at(-1)!.content as { content: { source?: { data: string } }[] }[]
+    sentDocument = Buffer.from(results[0]!.content[1]!.source!.data, 'base64').toString()
+    return route.fulfill({
+      json: {
+        stop_reason: 'end_turn',
+        content: [{ type: 'text', text: 'Your lipid panel looks normal.' }],
+      },
+    })
+  })
+  await page.getByRole('link', { name: /Explain this record/ }).click()
+  await page.getByRole('button', { name: 'I understand, continue' }).click()
+  await page.getByRole('button', { name: 'Send' }).click()
+  await expect(page.getByText('Your lipid panel looks normal.')).toBeVisible()
+  expect(sentDocument).toBe('%PDF-1.4 test document')
 
   await page.goto('/posts')
   await expect(page.getByRole('heading', { name: 'mocked post' })).toBeVisible()

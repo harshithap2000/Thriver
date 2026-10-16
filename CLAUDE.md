@@ -29,6 +29,15 @@ Query, Zustand, Zod. Package manager: **pnpm**.
 - `erasableSyntaxOnly` is on: no enums, namespaces, or constructor parameter properties.
 - Use `import type` for type-only imports (enforced).
 
+## Records assistant (server/)
+
+- `server/recordsAssistant.ts` runs one Claude turn (model, instructions, tools fixed server-side);
+  `server/vitePlugin.ts` serves it at `/api/records-assistant` in dev/preview. Key: `ANTHROPIC_API_KEY`
+  in `.env.local` (server-only). The agent loop and the `read_record` tool run in the browser
+  (`src/features/records/assistant/assistantClient.ts`) because record files live in IndexedDB.
+- Echo assistant `content` back unchanged (thinking/fallback blocks); send all tool results for a
+  turn in one user message.
+
 ## Testing
 
 - Colocate unit tests as `*.test.tsx`. Use `renderWithProviders` from `@/test/utils` for anything
