@@ -22,7 +22,7 @@ const actions: Action[] = [
   },
   {
     label: 'Move',
-    to: '/activities?category=move',
+    to: '/move',
     Icon: HeartIcon,
     tile: 'bg-move',
     ink: 'text-move-ink',

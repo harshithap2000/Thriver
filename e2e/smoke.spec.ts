@@ -65,8 +65,26 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
     'https://www.nytimes.com/games/wordle/index.html',
   )
 
+  // Move: log a walk
   await mainNav.getByRole('link', { name: 'Home' }).click()
   await page.getByRole('link', { name: 'Move' }).click()
-  await page.getByRole('link', { name: /example data feature/ }).click()
+  await page.getByRole('button', { name: '30 min' }).click()
+  await page.getByRole('button', { name: 'Log activity' }).click()
+  await expect(page.getByText('Goal reached!')).toBeVisible()
+
+  // Family: write a note as a relative, then open its link as the user
+  await page.goto('/family/write?for=Sam')
+  await page.getByLabel('Your name').fill('Mum')
+  await page.getByLabel('Your message for Sam').fill('Proud of you! 🌻')
+  await page.getByRole('button', { name: 'Create link to send' }).click()
+  const noteUrl = await page.getByRole('textbox', { name: 'Link' }).inputValue()
+  await page.goto(noteUrl)
+  await page.getByRole('button', { name: 'Save to my notes' }).click()
+  await page.getByRole('link', { name: 'See all notes' }).click()
+  await expect(page.getByText('Proud of you! 🌻')).toBeVisible()
+  await mainNav.getByRole('link', { name: 'Home' }).click()
+  await expect(page.getByRole('link', { name: /^Note from Mum/ })).toBeVisible()
+
+  await page.goto('/posts')
   await expect(page.getByRole('heading', { name: 'mocked post' })).toBeVisible()
 })

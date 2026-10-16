@@ -46,5 +46,13 @@ export function useSessionTimer(totalSeconds: number, onComplete: () => void) {
     setNow(t)
   }
 
-  return { elapsed, remaining: totalSeconds - elapsed, isRunning, isDone, pause, resume }
+  /** Jump to `seconds` into the session, keeping the paused/running state. */
+  const seek = (seconds: number) => {
+    const t = Date.now()
+    setBanked(Math.min(totalSeconds, Math.max(0, seconds)) * 1000)
+    setStartedAt((s) => (s === null ? null : t))
+    setNow(t)
+  }
+
+  return { elapsed, remaining: totalSeconds - elapsed, isRunning, isDone, pause, resume, seek }
 }

@@ -1,9 +1,9 @@
+import { useSessionTimer } from '@/shared/hooks/useSessionTimer'
 import { Button } from '@/shared/ui/Button'
 import { cn } from '@/shared/utils/cn'
 
 import { formatClock, phaseAt, phaseLabels, type MeditationSession } from '../sessions'
 import { useMeditationStore } from '../useMeditationStore'
-import { useSessionTimer } from '../useSessionTimer'
 
 const expanded = { in: true, hold: true, out: false, rest: false } as const
 
