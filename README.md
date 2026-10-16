@@ -41,7 +41,7 @@ First-time e2e setup: `pnpm exec playwright install chromium`.
 
 ```
 src/
-  app/            App shell: providers, router, layouts, error boundaries, global styles
+  app/            App shell: providers, router, mobile layout with tab bar, error boundaries, styles
   features/       One folder per domain feature
     posts/          Example feature (data fetching)
       api/            API calls (use shared/lib/apiClient)
@@ -49,8 +49,10 @@ src/
       hooks/          React Query hooks and query keys
       types.ts        Zod schemas and inferred types
       index.ts        Public API: the only file other modules may import
+    home/           Home screen sections (greeting, activities, focus, recommendations)
+    mood-check-in/  Daily mood check-in, persisted per day with Zustand
     splash/         Animated splash screen shown when the app opens
-    theme/          Example feature (client state with Zustand)
+    theme/          Dark-mode store + toggle (not currently mounted)
   pages/          Thin route components that compose features (default export, lazy-loaded)
   shared/         Feature-agnostic code
     config/         Validated env config

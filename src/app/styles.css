@@ -9,6 +9,22 @@
   --color-brand-600: oklch(0.56 0.14 165);
   --color-brand-700: oklch(0.48 0.12 165);
 
+  /* App UI (wellness palette) */
+  --font-sans: 'Nunito Variable', ui-sans-serif, system-ui, sans-serif;
+  --color-cream: #fef8f3;
+  --color-ink: #23443f;
+  --color-ink-muted: #6f7a77;
+  --color-pine: #2f7d63;
+  --color-mint: #e1efe1;
+  --color-meditate: #d9efc8;
+  --color-meditate-ink: #3f8f5b;
+  --color-move: #ffd9ca;
+  --color-move-ink: #f2694f;
+  --color-sleep: #ddd5f6;
+  --color-sleep-ink: #6e62b6;
+  --color-reflect: #feecc4;
+  --color-reflect-ink: #f2ae1c;
+
   /* Splash screen */
   --color-splash-bg: #fbffd5;
   --color-splash-ink: #6b6862;

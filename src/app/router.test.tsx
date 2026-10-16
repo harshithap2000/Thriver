@@ -18,7 +18,8 @@ function renderRoute(path: string) {
 describe('router', () => {
   it('renders the home page', async () => {
     renderRoute('/')
-    expect(await screen.findByRole('heading', { name: 'Welcome to Thriver' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /You’ve got this/ })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('aria-current', 'page')
   })
 
   it('renders the 404 page for unknown routes', async () => {
