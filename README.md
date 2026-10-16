@@ -51,6 +51,7 @@ src/
       index.ts        Public API: the only file other modules may import
     appointments/   Appointments calendar: month view, day list, upcoming, add/delete
     journal/        Journal with daily prompts, mood tags, search, edit/delete
+    games/          Links to New York Times Games daily puzzles
     home/           Home screen sections (greeting, activities, focus, recommendations)
     medication/     Medications with daily dose times and a today checklist
     meditation/     Guided breathing sessions with a timed player and practice stats

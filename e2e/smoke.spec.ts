@@ -59,6 +59,13 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
   await expect(page.getByRole('heading', { name: 'Sessions' })).toBeVisible()
 
   await mainNav.getByRole('link', { name: 'Home' }).click()
+  await page.getByRole('link', { name: 'Games' }).click()
+  await expect(page.getByRole('link', { name: /^Wordle:/ })).toHaveAttribute(
+    'href',
+    'https://www.nytimes.com/games/wordle/index.html',
+  )
+
+  await mainNav.getByRole('link', { name: 'Home' }).click()
   await page.getByRole('link', { name: 'Move' }).click()
   await page.getByRole('link', { name: /example data feature/ }).click()
   await expect(page.getByRole('heading', { name: 'mocked post' })).toBeVisible()

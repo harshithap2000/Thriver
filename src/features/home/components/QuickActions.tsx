@@ -1,7 +1,7 @@
 import type { ComponentType, SVGProps } from 'react'
 import { Link } from 'react-router'
 
-import { HeartIcon, MoonIcon, SproutIcon, SunIcon } from '@/shared/ui/icons'
+import { HeartIcon, PuzzleIcon, SproutIcon, SunIcon } from '@/shared/ui/icons'
 import { cn } from '@/shared/utils/cn'
 
 interface Action {
@@ -28,9 +28,9 @@ const actions: Action[] = [
     ink: 'text-move-ink',
   },
   {
-    label: 'Sleep',
-    to: '/activities?category=sleep',
-    Icon: MoonIcon,
+    label: 'Games',
+    to: '/games',
+    Icon: PuzzleIcon,
     tile: 'bg-sleep',
     ink: 'text-sleep-ink',
   },

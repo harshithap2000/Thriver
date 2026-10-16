@@ -176,3 +176,19 @@ export function MapPinIcon(props: IconProps) {
     </svg>
   )
 }
+
+export function PuzzleIcon(props: IconProps) {
+  return (
+    <svg {...base} fill="currentColor" {...props}>
+      <path d="M10 3.5a2.25 2.25 0 0 1 4.5 0V5H18a1 1 0 0 1 1 1v3.5h1.5a2.25 2.25 0 0 1 0 4.5H19V19a1 1 0 0 1-1 1h-4v-1.5a2 2 0 0 0-4 0V20H6a1 1 0 0 1-1-1v-4h1.5a2 2 0 0 0 0-4H5V6a1 1 0 0 1 1-1h4Z" />
+    </svg>
+  )
+}
+
+export function ExternalLinkIcon(props: IconProps) {
+  return (
+    <svg {...stroked} {...props}>
+      <path d="M14 4h6v6M20 4l-9 9M18 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10" />
+    </svg>
+  )
+}
