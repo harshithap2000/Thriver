@@ -50,7 +50,8 @@ src/
       types.ts        Zod schemas and inferred types
       index.ts        Public API: the only file other modules may import
     home/           Home screen sections (greeting, activities, focus, recommendations)
-    mood-check-in/  Daily mood check-in, persisted per day with Zustand
+    mood-check-in/  Daily mood check-in, streak/stats and weekly mood (Zustand, persisted)
+    profile/        Profile header with editable display name (Zustand, persisted)
     splash/         Animated splash screen shown when the app opens
     theme/          Dark-mode store + toggle (not currently mounted)
   pages/          Thin route components that compose features (default export, lazy-loaded)

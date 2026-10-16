@@ -15,10 +15,18 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
   await page.getByRole('button', { name: 'Great' }).click()
   await expect(page.getByText(/feeling great today/)).toBeVisible()
 
-  await page
-    .getByRole('navigation', { name: 'Main' })
-    .getByRole('link', { name: 'Explore' })
-    .click()
+  const mainNav = page.getByRole('navigation', { name: 'Main' })
+  await mainNav.getByRole('link', { name: 'Profile' }).click()
+  await expect(page.getByText('Day streak').locator('..')).toContainText('1')
+  await page.getByRole('button', { name: 'Add your name' }).click()
+  await page.getByLabel('What should we call you?').fill('Sam')
+  await page.getByRole('button', { name: 'Save' }).click()
+  await expect(page.getByRole('heading', { name: 'Sam' })).toBeVisible()
+
+  await mainNav.getByRole('link', { name: 'Home' }).click()
+  await expect(page.getByText(/, Sam$/)).toBeVisible()
+
+  await mainNav.getByRole('link', { name: 'Explore' }).click()
   await page.getByRole('link', { name: /example data feature/ }).click()
   await expect(page.getByRole('heading', { name: 'mocked post' })).toBeVisible()
 })

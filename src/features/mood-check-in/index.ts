@@ -1,3 +1,7 @@
+export { CheckInStats } from './components/CheckInStats'
+export { ClearHistoryButton } from './components/ClearHistoryButton'
 export { MoodCheckIn } from './components/MoodCheckIn'
+export { MoodWeek } from './components/MoodWeek'
 export { moods, type MoodId } from './moods'
+export { currentStreak, lastNDays, mostFrequentMood } from './stats'
 export { useMoodStore, useTodaysMood } from './useMoodStore'
