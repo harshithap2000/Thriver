@@ -10,12 +10,13 @@ Research round 1 (October 2026), compiled from web sources. Every claim links to
 sources disagree or are weak, that is flagged. **Nothing here is legal or medical advice.** Verify
 key facts with primary sources, a regulatory lawyer and clinical advisers before relying on them.
 
-| File                                                              | What it covers                                                                                                                 |
-| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| [01 – Clinical evidence](01-clinical-evidence.md)                 | What guidelines and trials say about exercise and nutrition after cancer and surgery, safety rules, digital-programme evidence |
-| [02 – Market & competitors](02-market-and-competitors.md)         | India's cancer burden, rehab gap, financial toxicity, Indian and global competitors, the name clash                            |
-| [03 – Business model & funding](03-business-model-and-funding.md) | Business Model Canvas, monetisation options, grants, CSR, investors, the Tata question                                         |
-| [04 – MVP & regulation](04-mvp-and-regulation.md)                 | Proposed MVP scope, India's medical-device software, data protection, telemedicine and AI rules                                |
+| File                                                                           | What it covers                                                                                                                 |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| [01 – Clinical evidence](01-clinical-evidence.md)                              | What guidelines and trials say about exercise and nutrition after cancer and surgery, safety rules, digital-programme evidence |
+| [02 – Market & competitors](02-market-and-competitors.md)                      | India's cancer burden, rehab gap, financial toxicity, Indian and global competitors, the name clash                            |
+| [03 – Business model & funding](03-business-model-and-funding.md)              | Business Model Canvas, monetisation options, grants, CSR, investors, the Tata question                                         |
+| [04 – MVP & regulation](04-mvp-and-regulation.md)                              | Proposed MVP scope, India's medical-device software, data protection, telemedicine and AI rules                                |
+| [05 – Brainstorm: day counter & Learn](05-brainstorm-day-counter-and-learn.md) | Creative ways to show days since surgery on Home; a Learn section with reviewed guides and Indian survivor stories             |
 
 ## The ten things to know
 
