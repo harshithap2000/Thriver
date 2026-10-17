@@ -80,6 +80,7 @@ src/
     mood-check-in/  Daily mood check-in, streak/stats and weekly mood (Zustand, persisted)
     records/        Health records saved on-device (IndexedDB) + AI records assistant
     profile/        Profile header with editable display name (Zustand, persisted)
+    shop/           Care › Shop: curated recovery essentials, refills, food, services (links out)
     splash/         Animated splash screen shown when the app opens
     theme/          Dark-mode store + toggle (not currently mounted)
   pages/          Thin route components that compose features (default export, lazy-loaded)

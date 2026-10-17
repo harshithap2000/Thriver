@@ -2,18 +2,20 @@ import { Link, useSearchParams } from 'react-router'
 
 import { AppointmentsPlanner } from '@/features/appointments'
 import { MedicationPlanner } from '@/features/medication'
+import { ShopHub } from '@/features/shop'
 import { cn } from '@/shared/utils/cn'
 
 const views = [
   { id: 'appointments', label: 'Appointments' },
   { id: 'medication', label: 'Medication' },
+  { id: 'shop', label: 'Shop' },
 ] as const
 
 type View = (typeof views)[number]['id']
 
 export default function CarePage() {
   const [params] = useSearchParams()
-  const view: View = params.get('view') === 'medication' ? 'medication' : 'appointments'
+  const view: View = views.find((v) => v.id === params.get('view'))?.id ?? 'appointments'
 
   return (
     <div className="space-y-6">
@@ -33,7 +35,9 @@ export default function CarePage() {
           </Link>
         ))}
       </nav>
-      {view === 'appointments' ? <AppointmentsPlanner /> : <MedicationPlanner />}
+      {view === 'appointments' && <AppointmentsPlanner />}
+      {view === 'medication' && <MedicationPlanner />}
+      {view === 'shop' && <ShopHub />}
     </div>
   )
 }

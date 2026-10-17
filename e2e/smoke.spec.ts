@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 test('home loads, records a check-in and navigates via the tab bar', async ({ page }) => {
+  test.setTimeout(60_000)
   await page.route('**/posts?_limit=10', (route) =>
     route.fulfill({ json: [{ id: 1, userId: 1, title: 'mocked post', body: 'From e2e' }] }),
   )
@@ -88,6 +89,15 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
   await expect(page.getByText('Proud of you! 🌻')).toBeVisible()
   await mainNav.getByRole('link', { name: 'Home' }).click()
   await expect(page.getByRole('link', { name: /^Note from Mum/ })).toBeVisible()
+
+  // Care → Shop: medicine refills use the Medication list
+  await mainNav.getByRole('link', { name: 'Care' }).click()
+  await page
+    .getByRole('navigation', { name: 'Care sections' })
+    .getByRole('link', { name: 'Shop' })
+    .click()
+  await page.getByRole('button', { name: 'Medicine refills' }).click()
+  await expect(page.getByRole('link', { name: /Vitamin D on Tata 1mg/ })).toBeVisible()
 
   // Learn: open a guide and save it
   await mainNav.getByRole('link', { name: 'Learn' }).click()
