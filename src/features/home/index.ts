@@ -1,3 +1,4 @@
+export { DailyQuoteCard } from './components/DailyQuoteCard'
 export { FocusCard } from './components/FocusCard'
 export { HomeHeader } from './components/HomeHeader'
 export { QuickActions } from './components/QuickActions'

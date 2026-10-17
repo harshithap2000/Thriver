@@ -1,0 +1,75 @@
+/**
+ * Daily encouragement for Home. Original Thriver lines (no attributed quotes, which are often
+ * misattributed). Written for recovery: gentle, no "fight/beat" pressure, no promises.
+ * One per calendar day, cycling through the list.
+ */
+export const quotes = [
+  'Healing isn’t a straight line. Every step still counts, even the small ones.',
+  'You don’t have to be brave every minute. Showing up today is enough.',
+  'Rest is part of recovery, not a pause from it.',
+  'Your body has carried you through so much. Be gentle with it today.',
+  'Small steps, taken often, become a long way travelled.',
+  'Some days are for moving forward. Some days are for resting. Both are progress.',
+  'It’s okay to ask for help. Letting people in is a strength.',
+  'You are more than your diagnosis. You are still you.',
+  'Feel what you feel today. Every feeling is allowed.',
+  'A short walk, a deep breath, a glass of water: small acts of care add up.',
+  'Look how far you’ve come. Yesterday’s hard thing is today’s memory.',
+  'Strength grows quietly, one ordinary day at a time.',
+  'You don’t need to have it all figured out. Just the next gentle step.',
+  'Be proud of what you did today, even if it was simply getting through it.',
+  'Your pace is the right pace.',
+  'Every morning is a fresh page. Write something kind on it.',
+  'Courage isn’t the absence of fear. It’s taking care of yourself anyway.',
+  'Celebrate the little wins. They are the building blocks of big ones.',
+  'You are allowed to take up space, ask questions and be heard.',
+  'Healing happens in the body, the mind and the heart. Make room for all three.',
+  'A bad day is not a bad life. Tomorrow is a new chance.',
+  'Notice one good thing today, however small. It belongs to you.',
+  'You have survived every hard day so far. That’s worth remembering.',
+  'Moving a little is still moving. Be proud of every minute.',
+  'Kindness to yourself is not selfish. It is medicine for the spirit.',
+  'Lean on the people who love you. They want to carry some of the weight.',
+  'Your story is still being written, and you hold the pen.',
+  'Progress, not perfection.',
+  'Breathe in calm, breathe out worry. Repeat as needed.',
+  'The strongest roots grow in the hardest ground.',
+  'Today, choose one thing that makes you feel a little more like yourself.',
+  'Tired is not weak. It is your body asking for care.',
+  'Hope can be quiet. It still shines.',
+  'You are not alone on this path. Many walk it with you.',
+  'Every check-in, every walk, every meal is you choosing yourself.',
+  'Let today be simple: rest, nourish, move a little, smile once.',
+  'Your feelings about the future are valid. So is your strength right now.',
+  'Recovery isn’t a race. There is no finish line to rush towards.',
+  'Water, sunlight, rest, kind words. You are growing, like every green thing.',
+  'You have done hard things. You can do gentle things too.',
+  'Be patient with your body. It is working hard for you, even now.',
+  'One day at a time is a perfectly good plan.',
+  'The people who love you are proud of you. Let that in.',
+  'Your worth was never measured by how much you can do.',
+  'Even on cloudy days, the sun is still there.',
+  'Take the stairs one step at a time, or take the lift. Both get you there.',
+  'You are allowed to laugh, to enjoy, to look forward. Joy belongs to you too.',
+  'Healing takes time, and you deserve that time.',
+  'Write down one thing you’re grateful for. Let it stay with you today.',
+  'Strength isn’t always loud. Sometimes it’s just getting up again.',
+  'Your body remembers how to heal. Give it rest, food and kindness.',
+  'There is no wrong way to feel after cancer. Your way is valid.',
+  'Little by little, a little becomes a lot.',
+  'You are becoming stronger in ways you can’t always see yet.',
+  'A kind word to yourself today can carry you further than you think.',
+  'Every sunrise you see is a small celebration.',
+  'Today, let “good enough” be good enough.',
+  'Thriving doesn’t mean never struggling. It means growing through it.',
+  'Look after yourself the way you would look after someone you love.',
+  'You are still here, still growing, still you. That is something beautiful.',
+] as const
+
+/** The same quote all day, a different one tomorrow (local calendar date). */
+export function quoteForDate(date = new Date()) {
+  const dayNumber = Math.floor(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86_400_000,
+  )
+  return quotes[dayNumber % quotes.length]!
+}

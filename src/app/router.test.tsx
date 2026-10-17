@@ -20,6 +20,7 @@ describe('router', () => {
     renderRoute('/')
     expect(await screen.findByRole('heading', { name: /You’ve got this/ })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('aria-current', 'page')
+    expect(screen.getByText('Today’s strength')).toBeInTheDocument()
   })
 
   it('merges appointments and medication into Care, redirecting old addresses', async () => {
