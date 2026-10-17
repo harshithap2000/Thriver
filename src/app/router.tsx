@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react'
-import { createBrowserRouter, type RouteObject } from 'react-router'
+import { createBrowserRouter, redirect, type RouteObject } from 'react-router'
 
 import { AppShell } from './layouts/AppShell'
 import { RouteError } from './RouteError'
@@ -16,8 +16,12 @@ export const routes: RouteObject[] = [
     ErrorBoundary: RouteError,
     children: [
       { index: true, lazy: lazyPage(() => import('@/pages/HomePage')) },
-      { path: 'appointments', lazy: lazyPage(() => import('@/pages/AppointmentsPage')) },
-      { path: 'medication', lazy: lazyPage(() => import('@/pages/MedicationPage')) },
+      { path: 'care', lazy: lazyPage(() => import('@/pages/CarePage')) },
+      // Old addresses from before Calendar and Medication were merged into Care.
+      { path: 'appointments', loader: () => redirect('/care?view=appointments') },
+      { path: 'medication', loader: () => redirect('/care?view=medication') },
+      { path: 'learn', lazy: lazyPage(() => import('@/pages/LearnPage')) },
+      { path: 'learn/:slug', lazy: lazyPage(() => import('@/pages/GuidePage')) },
       { path: 'meditate', lazy: lazyPage(() => import('@/pages/MeditatePage')) },
       { path: 'games', lazy: lazyPage(() => import('@/pages/GamesPage')) },
       { path: 'family', lazy: lazyPage(() => import('@/pages/FamilyPage')) },

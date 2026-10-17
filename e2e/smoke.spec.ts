@@ -26,13 +26,16 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
   await mainNav.getByRole('link', { name: 'Home' }).click()
   await expect(page.getByText(/, Sam$/)).toBeVisible()
 
-  await mainNav.getByRole('link', { name: 'Calendar' }).click()
+  await mainNav.getByRole('link', { name: 'Care' }).click()
   await page.getByRole('button', { name: 'Add' }).click()
   await page.getByLabel('What is it?').fill('Therapy session')
   await page.getByRole('button', { name: 'Save appointment' }).click()
   await expect(page.getByRole('heading', { name: 'Therapy session' })).toBeVisible()
 
-  await mainNav.getByRole('link', { name: 'Medication' }).click()
+  await page
+    .getByRole('navigation', { name: 'Care sections' })
+    .getByRole('link', { name: 'Medication' })
+    .click()
   await page.getByRole('button', { name: 'Add' }).click()
   await page.getByLabel('Medication name').fill('Vitamin D')
   await page.getByRole('button', { name: 'Save medication' }).click()
@@ -85,6 +88,13 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
   await expect(page.getByText('Proud of you! 🌻')).toBeVisible()
   await mainNav.getByRole('link', { name: 'Home' }).click()
   await expect(page.getByRole('link', { name: /^Note from Mum/ })).toBeVisible()
+
+  // Learn: open a guide and save it
+  await mainNav.getByRole('link', { name: 'Learn' }).click()
+  await page.getByRole('link', { name: /Lymphoedema: signs/ }).click()
+  await expect(page.getByRole('heading', { name: 'Questions to ask your doctor' })).toBeVisible()
+  await page.getByRole('button', { name: 'Save' }).click()
+  await expect(page.getByRole('button', { name: 'Saved' })).toBeVisible()
 
   // Records: save a PDF, then ask the assistant (Anthropic response mocked) about it
   await mainNav.getByRole('link', { name: 'Records' }).click()

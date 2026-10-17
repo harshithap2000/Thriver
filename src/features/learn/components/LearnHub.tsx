@@ -1,0 +1,112 @@
+import { useMemo, useState } from 'react'
+
+import { inputClass } from '@/shared/ui/Field'
+import { SearchIcon } from '@/shared/ui/icons'
+import { cn } from '@/shared/utils/cn'
+
+import { guides, topics, type TopicId } from '../guides'
+import { useSavedGuides } from '../useSavedGuides'
+import { GuideCard } from './GuideCard'
+
+type Filter = TopicId | 'all' | 'saved'
+
+export function LearnHub() {
+  const saved = useSavedGuides((s) => s.saved)
+  const [filter, setFilter] = useState<Filter>('all')
+  const [query, setQuery] = useState('')
+
+  const visible = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    return guides
+      .filter(
+        (g) =>
+          filter === 'all' || (filter === 'saved' ? saved.includes(g.slug) : g.topic === filter),
+      )
+      .filter((g) => !q || `${g.title} ${g.summary}`.toLowerCase().includes(q))
+  }, [filter, query, saved])
+
+  const chips: { id: Filter; label: string }[] = [
+    { id: 'all', label: 'All' },
+    ...topics.map((t) => ({ id: t.id, label: `${t.emoji} ${t.label}` })),
+    { id: 'saved', label: `🔖 Saved${saved.length ? ` (${saved.length})` : ''}` },
+  ]
+
+  return (
+    <div className="space-y-6">
+      <header>
+        <h1 className="text-ink text-2xl font-extrabold">Learn</h1>
+        <p className="text-ink-muted">Clear answers about life after cancer treatment.</p>
+      </header>
+
+      <div className="relative">
+        <SearchIcon className="text-ink-muted pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2" />
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search topics, e.g. lymphoedema"
+          aria-label="Search guides"
+          className={cn(inputClass, 'pl-10')}
+        />
+      </div>
+
+      <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1">
+        {chips.map((c) => (
+          <button
+            key={c.id}
+            type="button"
+            aria-pressed={filter === c.id}
+            onClick={() => setFilter(c.id)}
+            className={cn(
+              'shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold',
+              filter === c.id ? 'bg-pine text-white' : 'text-ink bg-white shadow-sm',
+            )}
+          >
+            {c.label}
+          </button>
+        ))}
+      </div>
+
+      <section aria-labelledby="guides-title" className="space-y-3">
+        <h2 id="guides-title" className="text-ink font-bold">
+          Guides
+        </h2>
+        {visible.length === 0 ? (
+          <p className="border-ink-muted/20 text-ink-muted rounded-2xl border-2 border-dashed p-4 text-center text-sm">
+            {filter === 'saved' && !query
+              ? 'Guides you save will appear here.'
+              : 'No guides match that yet.'}
+          </p>
+        ) : (
+          <ul className="space-y-3">
+            {visible.map((g) => (
+              <li key={g.slug}>
+                <GuideCard guide={g} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section aria-labelledby="voices-title" className="space-y-3">
+        <h2 id="voices-title" className="text-ink font-bold">
+          Voices from survivors
+        </h2>
+        <div className="rounded-3xl bg-linear-to-br from-[#fbe9ee] to-[#f1e8f8] p-5">
+          <p className="text-2xl" aria-hidden="true">
+            🎙️
+          </p>
+          <p className="text-ink mt-2 font-bold">Real stories, coming soon</p>
+          <p className="text-ink-muted mt-1 text-sm">
+            We’re gathering stories from Indian cancer survivors, in their own words and languages:
+            what they wish they’d known, and what helped.
+          </p>
+        </div>
+      </section>
+
+      <p className="text-ink-muted text-center text-xs">
+        Thriver’s guides support your care. They don’t replace your doctor’s advice.
+      </p>
+    </div>
+  )
+}

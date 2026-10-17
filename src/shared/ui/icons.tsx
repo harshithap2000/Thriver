@@ -226,3 +226,29 @@ export function DownloadIcon(props: IconProps) {
     </svg>
   )
 }
+
+export function CareIcon(props: IconProps) {
+  return (
+    <svg {...stroked} {...props}>
+      <path d="M12 20.5s-8.5-5-8.5-11A4.8 4.8 0 0 1 12 6.6a4.8 4.8 0 0 1 8.5 2.9c0 6-8.5 11-8.5 11Z" />
+      <path d="M7 12h2.5l1.5-2.5 2 5 1.5-2.5H17" />
+    </svg>
+  )
+}
+
+export function BookIcon(props: IconProps) {
+  return (
+    <svg {...stroked} {...props}>
+      <path d="M12 6.5C10 5 7 4.5 3.5 5v13.5c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5Z" />
+      <path d="M12 6.5V20" />
+    </svg>
+  )
+}
+
+export function BookmarkIcon(props: IconProps) {
+  return (
+    <svg {...stroked} {...props}>
+      <path d="M6 4h12v16.5l-6-4-6 4Z" />
+    </svg>
+  )
+}

@@ -71,6 +71,7 @@ src/
     appointments/   Appointments calendar: month view, day list, upcoming, add/delete
     journal/        Journal with daily prompts, mood tags, search, edit/delete
     family/         Family notes delivered by shareable links (no server needed)
+    learn/          Learn: reviewed guides (topics, search, save) and survivor stories (soon)
     games/          Links to New York Times Games daily puzzles
     home/           Home screen sections (greeting, activities, focus, recommendations)
     medication/     Medications with daily dose times and a today checklist
