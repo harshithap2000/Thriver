@@ -29,8 +29,21 @@ export interface TurnResult {
   refused: boolean
 }
 
+/** Name-free context sent with each question. */
+export interface AssistantContext {
+  language: 'en' | 'hi'
+  profile?: {
+    cancerType: string | null
+    treatments: string[]
+    conditions: string[]
+    daysSinceSurgery: number | null
+    phase: string
+  }
+}
+
 interface TurnOptions {
   history: MessageParam[]
+  context?: AssistantContext
   question: string
   records: HealthRecord[]
   loadFile: (id: string) => Promise<Blob | undefined>
@@ -124,6 +137,7 @@ async function readRecord(
  */
 export async function askAssistant({
   history,
+  context,
   question,
   records,
   loadFile,
@@ -138,7 +152,7 @@ export async function askAssistant({
     const response = await fetchImpl(ASSISTANT_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages, catalog }),
+      body: JSON.stringify({ messages, catalog, context }),
     })
     if (!response.ok) {
       const body = (await response.json().catch(() => ({}))) as { error?: string }

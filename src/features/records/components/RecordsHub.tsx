@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 
 import { inputClass } from '@/shared/ui/Field'
 import { PlusIcon, SearchIcon, SparklesIcon } from '@/shared/ui/icons'
+import { CareDisclaimer } from '@/shared/ui/Notices'
 import { cn } from '@/shared/utils/cn'
 
 import { categories, type CategoryId } from '../categories'
@@ -123,6 +124,7 @@ export function RecordsHub() {
           )}
         </section>
       )}
+      <CareDisclaimer />
     </div>
   )
 }

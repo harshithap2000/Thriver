@@ -1,21 +1,18 @@
 import { FamilyHomeCard } from '@/features/family'
-import {
-  DailyQuoteCard,
-  FocusCard,
-  HomeHeader,
-  QuickActions,
-  RecommendedSection,
-} from '@/features/home'
-import { MoodCheckIn } from '@/features/mood-check-in'
+import { DailyQuoteCard, HomeHeader, QuickActions, RecommendedSection } from '@/features/home'
+import { CheckInPrompt, RecoveryCard, TodaysPlan } from '@/features/recovery'
 
 export default function HomePage() {
   return (
     <div className="space-y-7">
       <HomeHeader />
+      <div className="space-y-4">
+        <RecoveryCard />
+        <CheckInPrompt />
+      </div>
+      <TodaysPlan />
       <DailyQuoteCard />
       <QuickActions />
-      <FocusCard />
-      <MoodCheckIn />
       <FamilyHomeCard />
       <RecommendedSection />
     </div>

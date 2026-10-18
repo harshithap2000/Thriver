@@ -9,9 +9,69 @@ export interface MeditationSession {
   pattern: BreathPattern
   /** Tile background token. */
   tile: string
+  /** Shown instead of the sprout on the tile. */
+  emoji?: string
+  /** Written for life after cancer treatment. */
+  forSurvivors?: boolean
+  /** Gentle guidance shown in turn during the session (one every 30 seconds). */
+  cues?: readonly string[]
 }
 
 export const sessions: readonly MeditationSession[] = [
+  {
+    id: 'before-scan',
+    title: 'Before your scan',
+    description: 'Calm “scanxiety” before tests and results',
+    minutes: 5,
+    pattern: [4, 2, 6, 0],
+    tile: 'bg-sleep',
+    emoji: '🩻',
+    forSurvivors: true,
+    cues: [
+      'It’s normal to feel nervous before a scan or results.',
+      'Let your feet feel the floor. You are here, right now.',
+      'You don’t need to know the result yet. Just this breath.',
+      'If a “what if” arrives, notice it, and come back to the breath.',
+      'Whatever the result, you won’t face it alone.',
+      'Breathe out a little longer than you breathe in.',
+    ],
+  },
+  {
+    id: 'fear-of-recurrence',
+    title: 'When fear of recurrence visits',
+    description: 'Notice the worry, come back to now',
+    minutes: 7,
+    pattern: [4, 0, 6, 2],
+    tile: 'bg-reflect',
+    emoji: '🌧️',
+    forSurvivors: true,
+    cues: [
+      'Fear of cancer coming back is very common. It doesn’t mean something is wrong.',
+      'Name it gently: “This is fear.”',
+      'Where do you feel it in your body? Breathe towards that place.',
+      'Thoughts are not facts. Let this one pass like a cloud.',
+      'Come back to what you can see, hear and touch right now.',
+      'If worries keep returning, talk to your care team. Support helps.',
+    ],
+  },
+  {
+    id: 'sleep-hard-day',
+    title: 'Sleep after a hard day',
+    description: 'Body scan for treatment tiredness',
+    minutes: 10,
+    pattern: [4, 0, 7, 2],
+    tile: 'bg-meditate',
+    emoji: '🛏️',
+    forSurvivors: true,
+    cues: [
+      'Let the bed hold you. There is nothing to do now.',
+      'Soften your forehead, your jaw, your shoulders.',
+      'Let your arms grow heavy.',
+      'Let your belly rise and fall on its own.',
+      'Let your legs and feet rest.',
+      'Today was hard. Rest is part of recovery.',
+    ],
+  },
   {
     id: 'reset-1',
     title: 'One-Minute Reset',

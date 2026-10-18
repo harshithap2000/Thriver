@@ -1,4 +1,8 @@
 export { AssistantChat } from './assistant/AssistantChat'
+export type { AssistantContext } from './assistant/assistantClient'
+export { useAssistantConsent } from './assistant/useAssistantConsent'
 export { RecordDetail } from './components/RecordDetail'
 export { RecordsHub } from './components/RecordsHub'
 export { useRecordsStore, type HealthRecord } from './useRecordsStore'
+export { ACCEPTED_TYPES, MAX_FILE_BYTES } from './categories'
+export { allFiles, deleteAllFiles } from './fileStore'

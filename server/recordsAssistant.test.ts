@@ -55,6 +55,33 @@ describe('runAssistantTurn', () => {
     expect(params.system[1].text).toContain('"id":"r1"')
   })
 
+  it('adds the name-free profile and the reply language when given', async () => {
+    const { client, create } = fakeClient()
+    await runAssistantTurn(
+      {
+        messages: [{ role: 'user', content: 'नमस्ते' }],
+        catalog: [],
+        context: {
+          language: 'hi',
+          profile: {
+            cancerType: 'Breast',
+            treatments: ['surgery'],
+            conditions: [],
+            daysSinceSurgery: 23,
+            phase: '2 · Return to activity',
+          },
+        },
+      },
+      client,
+    )
+    const extra = create.mock.calls[0]![0].system[2].text
+    expect(extra).toContain('"daysSinceSurgery":23')
+    expect(extra).toContain('Hindi')
+
+    await runAssistantTurn({ messages: [{ role: 'user', content: 'Hi' }], catalog: [] }, client)
+    expect(create.mock.calls[1]![0].system).toHaveLength(2)
+  })
+
   it('rejects malformed requests without calling the API', async () => {
     const { client, create } = fakeClient()
     await expect(runAssistantTurn({ messages: [], catalog: [] }, client)).rejects.toBeInstanceOf(

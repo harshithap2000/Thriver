@@ -55,6 +55,21 @@ come first with a "For you" badge, and items only for other cancers are hidden b
 picks and explains up to three of each, and the server drops any id that wasn't in that list. Without
 a key, or if the call fails, the profile-based picks are shown instead.
 
+## Recovery, safety and privacy
+
+- **Recovery phases** (`features/recovery`): Home shows days since surgery, the current phase and
+  today's plan. Phases 2–4 unlock only when the care team clears the person (a signed note saved to
+  Records, or "they told me in person" with who and when). Plans adapt to the health profile.
+- **Daily check-in** at `/check-in`: tiredness, pain, warning signs and mood. Any warning sign pauses
+  exercise for the day and shows the care team's number (from the profile) and 112 / 108.
+- **Recovery summary** at `/profile/summary`: a patient-reported report to share on WhatsApp or print
+  to PDF. **Privacy centre** at `/profile/privacy`: consents with withdraw, export, delete.
+- The records assistant can answer in Hindi and gets a name-free profile summary for context.
+
+Exercise plans, warning-sign rules and the Hindi wording are placeholders marked "pending clinical
+review"; Thriver's clinical advisers (and a native Hindi speaker) must approve them before real
+patients rely on them.
+
 ## Scripts
 
 | Script                         | What it does                                  |
@@ -76,11 +91,10 @@ First-time e2e setup: `pnpm exec playwright install chromium`.
 src/
   app/            App shell: providers, router, mobile layout with tab bar, error boundaries, styles
   features/       One folder per domain feature
-    posts/          Example feature (data fetching)
-      api/            API calls (use shared/lib/apiClient)
+    <name>/         Each feature has the same shape, for example:
       components/     Feature UI (+ colocated *.test.tsx)
-      hooks/          React Query hooks and query keys
-      types.ts        Zod schemas and inferred types
+      hooks/          React Query hooks and query keys (for server data)
+      use…Store.ts    Zustand store for on-device data
       index.ts        Public API: the only file other modules may import
     ai-picks/       "Picked for you" in Learn and Shop: profile rules, optionally ranked by Claude
     appointments/   Appointments calendar: month view, day list, upcoming, add/delete
@@ -92,10 +106,13 @@ src/
     medication/     Medications with daily dose times and a today checklist
     meditation/     Guided breathing sessions with a timed player and practice stats
     move/           Guided movement routines, activity log, daily goal and week chart
-    mood-check-in/  Daily mood check-in, streak/stats and weekly mood (Zustand, persisted)
+    mood-check-in/  Mood check-in data, streak/stats and weekly mood (Zustand, persisted)
+    privacy/        Privacy centre: what's stored and shared, consents, export and delete
+    recovery/       Recovery phases, today's plan, symptom check-in, safety alert, clearance
     records/        Health records saved on-device (IndexedDB) + AI records assistant
     profile/        Sign-up (onboarding), health profile (cancer type, treatments, conditions), name
     shop/           Care › Shop: curated recovery essentials, refills, food, services (links out)
+    summary/        Recovery summary for the care team (WhatsApp share, print to PDF)
     splash/         Animated splash screen shown when the app opens
     theme/          Dark-mode store + toggle (not currently mounted)
   pages/          Thin route components that compose features (default export, lazy-loaded)
@@ -111,7 +128,7 @@ e2e/              Playwright tests
 ## Conventions
 
 - **Imports:** use the `@/` alias for cross-folder imports. Import a feature only through its `index.ts`
-  (`@/features/posts`, never `@/features/posts/components/...`). ESLint enforces this.
+  (`@/features/learn`, never `@/features/learn/components/...`). ESLint enforces this.
 - **Dependency direction:** `pages → features → shared`. `shared` never imports from `features` or `pages`.
 - **Server data** goes through TanStack Query, never Zustand. Keep Zustand for UI/client state.
 - **API responses** are validated with a Zod schema passed to `apiClient`.

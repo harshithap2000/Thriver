@@ -37,7 +37,7 @@ export function AppShell() {
       {!isGuestPage && (
         <nav
           aria-label="Main"
-          className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md rounded-t-3xl bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_24px_rgba(35,68,63,0.08)] backdrop-blur"
+          className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md rounded-t-3xl bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_24px_rgba(35,68,63,0.08)] backdrop-blur print:hidden"
         >
           <ul className="grid grid-cols-5">
             {tabs.map(({ to, label, Icon }) => (

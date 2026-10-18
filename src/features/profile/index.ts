@@ -17,4 +17,4 @@ export {
   type HealthProfile,
   type TreatmentId,
 } from './health'
-export { useProfileStore } from './useProfileStore'
+export { useProfileStore, type CareTeam } from './useProfileStore'

@@ -3,10 +3,15 @@ import { cn } from '@/shared/utils/cn'
 
 import { sessions, type MeditationSession } from '../sessions'
 
-export function SessionList({ onStart }: { onStart: (session: MeditationSession) => void }) {
+interface Props {
+  onStart: (session: MeditationSession) => void
+  items?: readonly MeditationSession[]
+}
+
+export function SessionList({ onStart, items = sessions }: Props) {
   return (
     <ul className="space-y-3">
-      {sessions.map((session) => (
+      {items.map((session) => (
         <li key={session.id}>
           <button
             type="button"
@@ -17,7 +22,13 @@ export function SessionList({ onStart }: { onStart: (session: MeditationSession)
             <span
               className={cn('grid size-14 shrink-0 place-items-center rounded-2xl', session.tile)}
             >
-              <SproutIcon className="text-meditate-ink size-7" />
+              {session.emoji ? (
+                <span aria-hidden="true" className="text-3xl">
+                  {session.emoji}
+                </span>
+              ) : (
+                <SproutIcon className="text-meditate-ink size-7" />
+              )}
             </span>
             <span className="min-w-0 flex-1">
               <span className="text-ink block leading-snug font-bold">{session.title}</span>

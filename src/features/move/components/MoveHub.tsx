@@ -1,4 +1,7 @@
+import type { ReactNode } from 'react'
 import { useSearchParams } from 'react-router'
+
+import { CareDisclaimer } from '@/shared/ui/Notices'
 
 import { findRoutine } from '../routines'
 import { LogActivityForm } from './LogActivityForm'
@@ -8,7 +11,7 @@ import { TodayActivities } from './TodayActivities'
 import { TodayProgress } from './TodayProgress'
 import { WeekChart } from './WeekChart'
 
-export function MoveHub() {
+export function MoveHub({ plan }: { plan?: ReactNode }) {
   const [params, setParams] = useSearchParams()
   const active = findRoutine(params.get('routine'))
 
@@ -24,6 +27,8 @@ export function MoveHub() {
       ) : (
         <>
           <TodayProgress />
+
+          {plan}
 
           <section aria-labelledby="routines-title" className="space-y-3">
             <h2 id="routines-title" className="text-ink font-bold">
@@ -54,9 +59,10 @@ export function MoveHub() {
           </section>
 
           <p className="text-ink-muted text-center text-xs">
-            Move gently and stop if anything hurts. Check with your doctor before starting new
+            Move gently and stop if anything hurts. Check with your care team before starting new
             exercise.
           </p>
+          <CareDisclaimer />
         </>
       )}
     </div>

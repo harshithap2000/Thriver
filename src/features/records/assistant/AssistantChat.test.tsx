@@ -19,7 +19,7 @@ const json = (body: unknown, status = 200) =>
 
 describe('AssistantChat', () => {
   beforeEach(async () => {
-    useAssistantConsent.setState({ consented: false })
+    useAssistantConsent.setState({ consented: false, language: 'en' })
     useRecordsStore.setState({ records: [] })
     await useRecordsStore
       .getState()
@@ -72,5 +72,32 @@ describe('AssistantChat', () => {
     await user.click(screen.getByRole('button', { name: 'Send' }))
 
     expect(await screen.findByText(/isn’t set up yet/)).toBeInTheDocument()
+  })
+
+  it('switches to Hindi and sends the language and profile with each question', async () => {
+    const user = userEvent.setup()
+    useAssistantConsent.setState({ consented: true })
+    const fetchSpy = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(
+        json({ stop_reason: 'end_turn', content: [{ type: 'text', text: 'ठीक है' }] }),
+      )
+    const profile = {
+      cancerType: 'Breast',
+      treatments: ['surgery'],
+      conditions: [],
+      daysSinceSurgery: 23,
+      phase: '2 · Return to activity',
+    }
+    renderWithProviders(<AssistantChat profile={{ context: profile, label: 'Breast cancer' }} />)
+    expect(screen.getByText(/Using your profile: Breast cancer/)).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Hindi' }))
+    expect(screen.getByRole('heading', { name: /रिकॉर्ड सहायक/ })).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /ब्लड रिपोर्ट/ }))
+
+    expect(await screen.findByText('ठीक है')).toBeInTheDocument()
+    const body = JSON.parse(String(fetchSpy.mock.calls[0]![1]!.body)) as { context: unknown }
+    expect(body.context).toEqual({ language: 'hi', profile })
   })
 })

@@ -52,7 +52,24 @@ const requestSchema = z.object({
     .min(1)
     .max(80),
   catalog: z.array(recordMetaSchema).max(1000),
+  /** Optional, name-free context: reply language and the patient's recovery profile. */
+  context: z
+    .object({
+      language: z.enum(['en', 'hi']).default('en'),
+      profile: z
+        .object({
+          cancerType: z.string().max(60).nullable(),
+          treatments: z.array(z.string().max(40)).max(10),
+          conditions: z.array(z.string().max(80)).max(10),
+          daysSinceSurgery: z.number().int().min(0).max(100_000).nullable(),
+          phase: z.string().max(60),
+        })
+        .optional(),
+    })
+    .optional(),
 })
+
+type AssistantContext = NonNullable<z.infer<typeof requestSchema>['context']>
 
 export const READ_RECORD_TOOL: Anthropic.Beta.BetaTool = {
   name: 'read_record',
@@ -76,6 +93,22 @@ function catalogText(catalog: RecordMeta[], today: string) {
   return `Today's date: ${today}\n\nThe patient's records (one JSON object per line):\n${lines.join('\n')}`
 }
 
+function contextText(context: AssistantContext | undefined) {
+  const parts: string[] = []
+  const p = context?.profile
+  if (p) {
+    parts.push(
+      `About the patient (from their Thriver profile; use it to make explanations relevant, never to diagnose): ${JSON.stringify(p)}`,
+    )
+  }
+  if (context?.language === 'hi') {
+    parts.push(
+      'Reply in simple, everyday Hindi written in Devanagari script, as spoken in India. Keep numbers, units, test names and medicine names as they appear on the report (you may add the Hindi word in brackets). The patient may write in Hindi, Hinglish or English.',
+    )
+  }
+  return parts.join('\n\n')
+}
+
 export interface AssistantResponse {
   content: Anthropic.Beta.BetaContentBlock[]
   stop_reason: Anthropic.Beta.BetaMessage['stop_reason']
@@ -90,7 +123,8 @@ export async function runAssistantTurn(
 ): Promise<AssistantResponse> {
   const parsed = requestSchema.safeParse(body)
   if (!parsed.success) throw new AssistantRequestError(400, 'Invalid request')
-  const { messages, catalog } = parsed.data
+  const { messages, catalog, context } = parsed.data
+  const extra = contextText(context)
 
   const response = await client.beta.messages.create({
     model: MODEL,
@@ -103,6 +137,7 @@ export async function runAssistantTurn(
     system: [
       { type: 'text', text: STABLE_INSTRUCTIONS },
       { type: 'text', text: catalogText(catalog, today) },
+      ...(extra ? [{ type: 'text' as const, text: extra }] : []),
     ],
     tools: [READ_RECORD_TOOL],
     messages: messages as Anthropic.Beta.BetaMessageParam[],

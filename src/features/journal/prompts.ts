@@ -11,6 +11,12 @@ export const prompts = [
   'What is one kind thing you did for yourself recently?',
   'What drained your energy today, and what restored it?',
   'If today had a title, what would it be?',
+  'What does “normal” feel like for me now?',
+  'One thing my body did well this week…',
+  'What would I tell someone just starting treatment?',
+  'What has cancer taught me about what matters to me?',
+  'When fear shows up, what helps me feel steady?',
+  'What is one thing I can do again now that I couldn’t a month ago?',
 ] as const
 
 /** A different prompt each day, offset by `skip` when the user asks for another. */

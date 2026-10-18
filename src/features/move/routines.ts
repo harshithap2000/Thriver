@@ -15,6 +15,37 @@ export interface Routine {
 
 export const routines: readonly Routine[] = [
   {
+    id: 'arm-mobility',
+    title: 'Shoulder & Arm Mobility',
+    description: 'Gentle range of movement after surgery (pending clinical review)',
+    tile: 'bg-sleep',
+    steps: [
+      { name: 'Deep breaths', cue: 'Sit tall, breathe slowly into your belly', seconds: 40 },
+      {
+        name: 'Shoulder shrugs',
+        cue: 'Lift both shoulders to your ears, then let go',
+        seconds: 40,
+      },
+      { name: 'Shoulder rolls', cue: 'Roll your shoulders slowly backwards', seconds: 40 },
+      {
+        name: 'Elbow bends',
+        cue: 'Arms by your sides, bend and straighten your elbows',
+        seconds: 40,
+      },
+      {
+        name: 'Wall walk',
+        cue: 'Face a wall and walk your fingers up only as far as is comfortable',
+        seconds: 60,
+      },
+      {
+        name: 'Hands behind head',
+        cue: 'Lying down, rest hands behind your head and let elbows open slowly',
+        seconds: 60,
+      },
+      { name: 'Rest', cue: 'Relax your arms and breathe. Stop if anything hurts', seconds: 40 },
+    ],
+  },
+  {
     id: 'wake-up',
     title: 'Morning Wake-Up',
     description: 'Loosen up and get your blood flowing',

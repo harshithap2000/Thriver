@@ -19,6 +19,7 @@ export function MeditationPlayer({ session, onExit }: MeditationPlayerProps) {
     () => logSession(session.id, session.minutes),
   )
   const { phase, duration, remaining: phaseLeft } = phaseAt(session.pattern, elapsed)
+  const cue = session.cues?.[Math.floor(elapsed / 30) % session.cues.length]
 
   if (isDone) {
     return (
@@ -80,6 +81,8 @@ export function MeditationPlayer({ session, onExit }: MeditationPlayerProps) {
           </p>
         </div>
       </div>
+
+      {cue && <p className="text-ink max-w-xs text-lg leading-snug font-semibold">{cue}</p>}
 
       <div className="flex gap-3">
         <Button variant="secondary" onClick={onExit}>

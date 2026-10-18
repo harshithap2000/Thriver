@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router'
 
-import { findSession } from '../sessions'
+import { findSession, sessions } from '../sessions'
 import { MeditationPlayer } from './MeditationPlayer'
 import { MeditationStats } from './MeditationStats'
 import { SessionList } from './SessionList'
@@ -27,11 +27,24 @@ export function MeditateHub() {
             </h2>
             <MeditationStats />
           </section>
+          <section aria-labelledby="meditate-survivors" className="space-y-3">
+            <h2 id="meditate-survivors" className="text-ink flex items-center gap-2 font-bold">
+              For survivors
+              <span className="bg-sleep text-sleep-ink rounded-full px-2 py-0.5 text-xs">New</span>
+            </h2>
+            <SessionList
+              items={sessions.filter((s) => s.forSurvivors)}
+              onStart={(s) => setParams({ session: s.id })}
+            />
+          </section>
           <section aria-labelledby="meditate-sessions" className="space-y-3">
             <h2 id="meditate-sessions" className="text-ink font-bold">
               Sessions
             </h2>
-            <SessionList onStart={(s) => setParams({ session: s.id })} />
+            <SessionList
+              items={sessions.filter((s) => !s.forSurvivors)}
+              onStart={(s) => setParams({ session: s.id })}
+            />
           </section>
         </>
       )}

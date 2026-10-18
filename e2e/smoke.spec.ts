@@ -2,9 +2,6 @@ import { expect, test } from '@playwright/test'
 
 test('home loads, records a check-in and navigates via the tab bar', async ({ page }) => {
   test.setTimeout(60_000)
-  await page.route('**/posts?_limit=10', (route) =>
-    route.fulfill({ json: [{ id: 1, userId: 1, title: 'mocked post', body: 'From e2e' }] }),
-  )
 
   await page.goto('/')
   const splash = page.getByRole('status', { name: 'Loading Thriver' })
@@ -26,8 +23,14 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
 
   await expect(page.getByRole('heading', { name: /You’ve got this/ })).toBeVisible()
 
-  await page.getByRole('button', { name: 'Great' }).click()
-  await expect(page.getByText(/feeling great today/)).toBeVisible()
+  // Home shows the recovery journey; the daily check-in saves symptoms and mood
+  await expect(page.getByRole('heading', { name: 'Phase 1 · Early recovery' })).toBeVisible()
+  await expect(page.getByText(/^Day \d+ since surgery$/)).toBeVisible()
+  await page.getByRole('link', { name: 'Check in' }).click()
+  await page.getByText('Great', { exact: true }).click()
+  await expect(page.getByRole('radio', { name: 'Great' })).toBeChecked()
+  await page.getByRole('button', { name: 'Save check-in' }).click()
+  await expect(page.getByText('Thanks for checking in')).toBeVisible()
 
   const mainNav = page.getByRole('navigation', { name: 'Main' })
   await mainNav.getByRole('link', { name: 'Profile' }).click()
@@ -84,6 +87,15 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
   // Move: log a walk
   await mainNav.getByRole('link', { name: 'Home' }).click()
   await page.getByRole('link', { name: 'Move' }).click()
+  // Move: unlock Phase 2 after the care team says so
+  await page.getByRole('link', { name: 'Get cleared for Phase 2' }).click()
+  await page.getByRole('button', { name: /They told me in person/ }).click()
+  await page.getByLabel('Who cleared you?').fill('Dr Rao')
+  await page.getByRole('checkbox').check()
+  await page.getByRole('button', { name: 'Unlock Phase 2' }).click()
+  await expect(page.getByRole('listitem').filter({ hasText: 'You are here' })).toContainText(
+    'Return to activity',
+  )
   await page.getByRole('button', { name: '30 min' }).click()
   await page.getByRole('button', { name: 'Log activity' }).click()
   await expect(page.getByText('Goal reached!')).toBeVisible()
@@ -122,6 +134,19 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
   await expect(page.getByRole('heading', { name: 'Questions to ask your doctor' })).toBeVisible()
   await page.getByRole('button', { name: 'Save' }).click()
   await expect(page.getByRole('button', { name: 'Saved' })).toBeVisible()
+
+  // Profile: recovery summary and privacy centre
+  await mainNav.getByRole('link', { name: 'Profile' }).click()
+  await page.getByRole('link', { name: /Recovery summary for your doctor/ }).click()
+  await expect(page.getByRole('heading', { name: 'Recovery summary' })).toBeVisible()
+  await expect(page.getByText(/Sam · Breast cancer/)).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Share on WhatsApp' })).toHaveAttribute(
+    'href',
+    /^https:\/\/wa\.me\/\?text=/,
+  )
+  await mainNav.getByRole('link', { name: 'Profile' }).click()
+  await page.getByRole('link', { name: /Your privacy/ }).click()
+  await expect(page.getByRole('heading', { name: 'Your consents' })).toBeVisible()
 
   // Records: save a PDF, then ask the assistant (Anthropic response mocked) about it
   await mainNav.getByRole('link', { name: 'Records' }).click()
@@ -172,7 +197,4 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
   await page.getByRole('button', { name: 'Send' }).click()
   await expect(page.getByText('Your lipid panel looks normal.')).toBeVisible()
   expect(sentDocument).toBe('%PDF-1.4 test document')
-
-  await page.goto('/posts')
-  await expect(page.getByRole('heading', { name: 'mocked post' })).toBeVisible()
 })
