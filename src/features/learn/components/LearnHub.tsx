@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
+import { Link } from 'react-router'
 
+import { cancerLabel, personalise, useProfileStore } from '@/features/profile'
 import { inputClass } from '@/shared/ui/Field'
 import { SearchIcon } from '@/shared/ui/icons'
 import { cn } from '@/shared/utils/cn'
@@ -10,20 +12,29 @@ import { GuideCard } from './GuideCard'
 
 type Filter = TopicId | 'all' | 'saved'
 
-export function LearnHub() {
+/** `picks` is an optional slot (e.g. AI picks) shown under the header. */
+export function LearnHub({ picks }: { picks?: ReactNode }) {
   const saved = useSavedGuides((s) => s.saved)
+  const health = useProfileStore((s) => s.health)
   const [filter, setFilter] = useState<Filter>('all')
   const [query, setQuery] = useState('')
+  const [showAll, setShowAll] = useState(false)
+
+  const personalised = useMemo(() => personalise(guides, health), [health])
+  const label = cancerLabel(health.cancerType)
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase()
-    return guides
+    const pool = showAll
+      ? [...personalised.items, ...personalised.hidden.map((g) => ({ ...g, forYou: false }))]
+      : personalised.items
+    return pool
       .filter(
         (g) =>
           filter === 'all' || (filter === 'saved' ? saved.includes(g.slug) : g.topic === filter),
       )
       .filter((g) => !q || `${g.title} ${g.summary}`.toLowerCase().includes(q))
-  }, [filter, query, saved])
+  }, [personalised, showAll, filter, query, saved])
 
   const chips: { id: Filter; label: string }[] = [
     { id: 'all', label: 'All' },
@@ -35,8 +46,21 @@ export function LearnHub() {
     <div className="space-y-6">
       <header>
         <h1 className="text-ink text-2xl font-extrabold">Learn</h1>
-        <p className="text-ink-muted">Clear answers about life after cancer treatment.</p>
+        <p className="text-ink-muted">
+          {label ? (
+            <>
+              Personalised for your {label.toLowerCase()} cancer recovery ·{' '}
+              <Link to="/profile/health" className="text-pine font-semibold underline">
+                Change
+              </Link>
+            </>
+          ) : (
+            'Clear answers about life after cancer treatment.'
+          )}
+        </p>
       </header>
+
+      {picks}
 
       <div className="relative">
         <SearchIcon className="text-ink-muted pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2" />
@@ -81,10 +105,21 @@ export function LearnHub() {
           <ul className="space-y-3">
             {visible.map((g) => (
               <li key={g.slug}>
-                <GuideCard guide={g} />
+                <GuideCard guide={g} forYou={g.forYou} />
               </li>
             ))}
           </ul>
+        )}
+        {personalised.hidden.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setShowAll((v) => !v)}
+            className="text-pine hover:bg-mint w-full rounded-2xl py-3 text-sm font-semibold"
+          >
+            {showAll
+              ? 'Show only guides for me'
+              : `Show ${personalised.hidden.length} more guide${personalised.hidden.length > 1 ? 's' : ''} for other cancers`}
+          </button>
         )}
       </section>
 

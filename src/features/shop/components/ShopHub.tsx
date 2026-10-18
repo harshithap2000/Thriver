@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 
+import { personalise, useProfileStore } from '@/features/profile'
 import { cn } from '@/shared/utils/cn'
 
-import { essentials, foods, services } from '../catalogue'
+import { essentials, foods, services, type ShopItem } from '../catalogue'
 import { MedicineRefills } from './MedicineRefills'
 import { ShopItemCard } from './ShopItemCard'
 
@@ -15,7 +16,33 @@ const sections = [
 
 type Section = (typeof sections)[number]['id']
 
-export function ShopHub() {
+/** Items for this person first; items for other cancers behind a toggle. */
+function PersonalisedItems({ items }: { items: readonly ShopItem[] }) {
+  const health = useProfileStore((s) => s.health)
+  const [showAll, setShowAll] = useState(false)
+  const { items: mine, hidden } = useMemo(() => personalise(items, health), [items, health])
+  const list = showAll ? [...mine, ...hidden.map((i) => ({ ...i, forYou: false }))] : mine
+
+  return (
+    <>
+      {list.map((item) => (
+        <ShopItemCard key={item.id} item={item} forYou={item.forYou} />
+      ))}
+      {hidden.length > 0 && (
+        <button
+          type="button"
+          onClick={() => setShowAll((v) => !v)}
+          className="text-pine hover:bg-mint w-full rounded-2xl py-3 text-sm font-semibold"
+        >
+          {showAll ? 'Show only items for me' : `Show ${hidden.length} more for other needs`}
+        </button>
+      )}
+    </>
+  )
+}
+
+/** `picks` is an optional slot (e.g. AI picks) shown under the header. */
+export function ShopHub({ picks }: { picks?: ReactNode }) {
   const [section, setSection] = useState<Section>('essentials')
 
   return (
@@ -27,6 +54,8 @@ export function ShopHub() {
           links.
         </p>
       </header>
+
+      {picks}
 
       <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1">
         {sections.map((s) => (
@@ -47,9 +76,7 @@ export function ShopHub() {
 
       {section === 'essentials' && (
         <section aria-label="Recovery essentials" className="space-y-3">
-          {essentials.map((item) => (
-            <ShopItemCard key={item.id} item={item} />
-          ))}
+          <PersonalisedItems items={essentials} />
         </section>
       )}
 
@@ -61,9 +88,7 @@ export function ShopHub() {
 
       {section === 'food' && (
         <section aria-label="Food" className="space-y-3">
-          {foods.map((item) => (
-            <ShopItemCard key={item.id} item={item} />
-          ))}
+          <PersonalisedItems items={foods} />
           <div className="rounded-3xl bg-linear-to-br from-[#fff3cf] to-[#fbe9ee] p-4">
             <p className="text-ink font-bold">🍱 Dietitian-approved meal kits</p>
             <p className="text-ink-muted text-sm">Coming soon with partner kitchens.</p>

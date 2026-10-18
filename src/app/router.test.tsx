@@ -2,6 +2,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, within } from '@testing-library/react'
 import { createMemoryRouter, RouterProvider } from 'react-router'
 
+import { useProfileStore } from '@/features/profile'
 import { createQueryClient } from '@/shared/lib/queryClient'
 
 import { routes } from './router'
@@ -16,6 +17,15 @@ function renderRoute(path: string) {
 }
 
 describe('router', () => {
+  beforeEach(() => useProfileStore.setState({ onboarded: true }))
+
+  it('sends new users to sign-up first', async () => {
+    useProfileStore.setState({ onboarded: false })
+    renderRoute('/learn')
+    expect(await screen.findByRole('heading', { name: 'Welcome to Thriver' })).toBeInTheDocument()
+    expect(screen.queryByRole('navigation', { name: 'Main' })).not.toBeInTheDocument()
+  })
+
   it('renders the home page', async () => {
     renderRoute('/')
     expect(await screen.findByRole('heading', { name: /You’ve got this/ })).toBeInTheDocument()

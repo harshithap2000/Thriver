@@ -1,3 +1,5 @@
+import type { Audience } from '@/features/profile'
+
 /**
  * Learn guides. Written in plain language from the cited sources.
  * Every guide must be checked by Thriver's clinical advisers before real patients rely on it;
@@ -30,6 +32,8 @@ export interface Guide {
   body: Block[]
   questions?: string[]
   sources: { label: string; url: string }[]
+  /** Who it's for; omitted means everyone. */
+  audience?: Audience
   /** Who reviewed it and when; null until clinical review. */
   reviewed: { by: string; date: string } | null
 }
@@ -40,6 +44,7 @@ export const guides: Guide[] = [
     title: 'Recovering after breast surgery: what’s typical',
     summary: 'A general picture of the first weeks after a mastectomy, and the signs to act on.',
     topic: 'recovery',
+    audience: { cancerTypes: ['breast'] },
     minutes: 3,
     body: [
       {
@@ -79,6 +84,10 @@ export const guides: Guide[] = [
     title: 'Lymphoedema: signs to watch for',
     summary: 'What lymphoedema is, early signs, and when swelling needs urgent attention.',
     topic: 'recovery',
+    audience: {
+      cancerTypes: ['breast', 'gynae', 'head-neck', 'prostate'],
+      conditions: ['lymphoedema'],
+    },
     minutes: 3,
     body: [
       {
@@ -386,6 +395,122 @@ export const guides: Guide[] = [
     reviewed: null,
   },
 ]
+
+guides.push(
+  {
+    slug: 'living-with-a-stoma',
+    title: 'Living with a stoma: first weeks',
+    summary: 'Food, medicines and everyday life after colostomy surgery.',
+    topic: 'recovery',
+    minutes: 3,
+    audience: { cancerTypes: ['colorectal'], conditions: ['stoma'] },
+    body: [
+      {
+        type: 'p',
+        text: 'Adjusting to a stoma takes time. Your stoma nurse is your best guide, and most people find daily life gets easier week by week.',
+      },
+      { type: 'h', text: 'Eating and drinking' },
+      {
+        type: 'list',
+        items: [
+          'Most people can return to a normal, varied diet. Early on, you may be advised to eat less fibre until your output settles.',
+          'Eat regularly, chew well and drink plenty of fluids.',
+          'Some foods can cause wind or smells. A simple food and symptom diary helps you learn what suits you.',
+        ],
+      },
+      { type: 'h', text: 'Medicines' },
+      {
+        type: 'p',
+        text: 'Some medicines may not work as well with a stoma. Ask your doctor or pharmacist whether a liquid or different form would be better, and don’t stop any prescribed medicine without advice.',
+      },
+      { type: 'h', text: 'Everyday life' },
+      {
+        type: 'p',
+        text: 'Modern bags are discreet, and most people can wear their usual clothes. You can usually go back to work when you feel well. If your job involves heavy lifting, talk to your team and employer first.',
+      },
+      {
+        type: 'callout',
+        tone: 'warning',
+        text: 'Contact your stoma nurse or doctor if your stoma changes colour, output stops, or you have severe pain, vomiting or a swollen tummy.',
+      },
+    ],
+    questions: [
+      'Which foods should I go easy on at first?',
+      'Do any of my medicines need a different form?',
+      'Who do I call if I have a problem with my stoma?',
+    ],
+    sources: [
+      {
+        label: 'NHS: Recovery and lifestyle changes after a colostomy',
+        url: 'https://www.nhs.uk/conditions/colostomy/recovery-and-lifestyle-changes-after-a-colostomy',
+      },
+      {
+        label: 'Cambridge University Hospitals: Healthy eating with a colostomy',
+        url: 'https://www.cuh.nhs.uk/patient-information/healthy-eating-with-a-colostomy/',
+      },
+    ],
+    reviewed: null,
+  },
+  {
+    slug: 'eating-with-a-sore-mouth',
+    title: 'Eating with a sore mouth or difficult swallowing',
+    summary: 'Gentle food and mouth-care tips after head and neck treatment.',
+    topic: 'food',
+    minutes: 3,
+    audience: { cancerTypes: ['head-neck', 'stomach'], conditions: ['swallowing'] },
+    body: [
+      {
+        type: 'p',
+        text: 'Treatment for head and neck cancer can make your mouth sore or dry and swallowing harder. These problems are often temporary, and there is a lot that can help.',
+      },
+      { type: 'h', text: 'Food that’s easier to manage' },
+      {
+        type: 'list',
+        items: [
+          'Soft, moist foods like khichdi, dal, curd rice, upma, idli with sambar, or porridge.',
+          'Add sauces, gravies or curd to keep food moist.',
+          'Avoid very spicy, salty, acidic or rough foods (like crisp toast or raw vegetables) while your mouth is sore.',
+          'Lukewarm or cool foods are often easier than very hot or very cold ones.',
+        ],
+      },
+      { type: 'h', text: 'Mouth care' },
+      {
+        type: 'list',
+        items: [
+          'Keep a drink nearby and sip often, especially if your mouth is dry.',
+          'Ask your team before buying a mouthwash, as some are too strong.',
+          'Taking prescribed pain relief before meals can make eating easier.',
+        ],
+      },
+      {
+        type: 'callout',
+        tone: 'info',
+        text: 'A speech and language therapist can check your swallow and suggest safe foods and exercises. A dietitian can help if you’re losing weight.',
+      },
+      {
+        type: 'callout',
+        tone: 'warning',
+        text: 'Tell your team quickly if you cough or choke when eating or drinking, or if you’re losing weight or struggling to drink enough.',
+      },
+    ],
+    questions: [
+      'Can I be referred to a speech and language therapist?',
+      'Which mouthwash or gel is safe for me?',
+      'How can I keep my weight up?',
+    ],
+    sources: [
+      {
+        label: 'Macmillan: Eating problems and cancer',
+        url: 'https://www.macmillan.org.uk/assets/eating-problems-and-cancer-english.pdf',
+      },
+      {
+        label: 'South Eastern HSC Trust: Eating and drinking after head and neck cancer',
+        url: 'https://setrust.hscni.net/service/cancer-services/head-and-neck/beyond-cancer/physical-changes/eating-and-drinking/',
+      },
+    ],
+    reviewed: null,
+  },
+)
 
 export const findGuide = (slug: string | undefined) => guides.find((g) => g.slug === slug)
 export const topicInfo = (id: TopicId) => topics.find((t) => t.id === id)!

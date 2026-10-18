@@ -1,10 +1,17 @@
 import { CheckInStats, ClearHistoryButton, MoodWeek } from '@/features/mood-check-in'
-import { ProfileHeader } from '@/features/profile'
+import { HealthProfileCard, ProfileHeader } from '@/features/profile'
 
 export default function ProfilePage() {
   return (
     <div className="space-y-7">
       <ProfileHeader />
+
+      <section aria-labelledby="health-title" className="space-y-3">
+        <h2 id="health-title" className="text-ink font-bold">
+          Your health profile
+        </h2>
+        <HealthProfileCard />
+      </section>
 
       <section aria-labelledby="progress-title" className="space-y-3">
         <h2 id="progress-title" className="text-ink font-bold">

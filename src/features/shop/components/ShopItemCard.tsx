@@ -5,7 +5,7 @@ import { cn } from '@/shared/utils/cn'
 import type { ShopItem } from '../catalogue'
 import { StoreButtons } from './StoreButtons'
 
-export function ShopItemCard({ item }: { item: ShopItem }) {
+export function ShopItemCard({ item, forYou = false }: { item: ShopItem; forYou?: boolean }) {
   return (
     <article className="space-y-3 rounded-3xl bg-white p-4 shadow-sm">
       <div className="flex gap-3">
@@ -17,6 +17,11 @@ export function ShopItemCard({ item }: { item: ShopItem }) {
         </span>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
+            {forYou && (
+              <span className="bg-mint text-pine rounded-full px-2 py-0.5 text-[11px] font-bold">
+                For you
+              </span>
+            )}
             <h3 className="text-ink font-bold">{item.name}</h3>
             {item.askFirst && (
               <span className="rounded-full bg-[#fff3cf] px-2 py-0.5 text-[11px] font-bold text-[#8a6a00]">

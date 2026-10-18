@@ -4,7 +4,7 @@ import { cn } from '@/shared/utils/cn'
 
 import { topicInfo, type Guide } from '../guides'
 
-export function GuideCard({ guide }: { guide: Guide }) {
+export function GuideCard({ guide, forYou = false }: { guide: Guide; forYou?: boolean }) {
   const topic = topicInfo(guide.topic)
   return (
     <Link
@@ -18,6 +18,11 @@ export function GuideCard({ guide }: { guide: Guide }) {
         {topic.emoji}
       </span>
       <span className="min-w-0 flex-1">
+        {forYou && (
+          <span className="bg-mint text-pine mb-1 inline-block rounded-full px-2 py-0.5 text-xs font-bold">
+            For you
+          </span>
+        )}
         <span className="text-ink block leading-snug font-bold">{guide.title}</span>
         <span className="text-ink-muted block text-sm">
           {guide.minutes} min read · {topic.label}

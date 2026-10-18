@@ -1,5 +1,6 @@
 import { Link, useSearchParams } from 'react-router'
 
+import { PickedForYou } from '@/features/ai-picks'
 import { AppointmentsPlanner } from '@/features/appointments'
 import { MedicationPlanner } from '@/features/medication'
 import { ShopHub } from '@/features/shop'
@@ -37,7 +38,7 @@ export default function CarePage() {
       </nav>
       {view === 'appointments' && <AppointmentsPlanner />}
       {view === 'medication' && <MedicationPlanner />}
-      {view === 'shop' && <ShopHub />}
+      {view === 'shop' && <ShopHub picks={<PickedForYou kind="shop" />} />}
     </div>
   )
 }

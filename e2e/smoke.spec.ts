@@ -11,6 +11,19 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
   await expect(splash).toBeVisible()
   await expect(splash).toBeHidden({ timeout: 5000 })
 
+  // Sign-up: new users go through onboarding first
+  await expect(page).toHaveURL(/\/welcome$/)
+  await page.getByRole('button', { name: 'Get started' }).click()
+  await page.getByRole('textbox', { name: 'Your name' }).fill('Sam')
+  await page.getByRole('button', { name: 'Continue' }).click()
+  await page.getByRole('button', { name: 'Breast' }).click()
+  await page.getByRole('button', { name: 'Surgery' }).click()
+  await page.getByLabel(/Date of your/).fill('2026-09-23')
+  await page.getByRole('button', { name: 'Continue' }).click()
+  await page.getByRole('checkbox', { name: /lymphoedema/ }).check()
+  await page.getByRole('button', { name: 'Continue' }).click()
+  await page.getByRole('button', { name: 'Finish' }).click()
+
   await expect(page.getByRole('heading', { name: /You’ve got this/ })).toBeVisible()
 
   await page.getByRole('button', { name: 'Great' }).click()
@@ -19,10 +32,8 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
   const mainNav = page.getByRole('navigation', { name: 'Main' })
   await mainNav.getByRole('link', { name: 'Profile' }).click()
   await expect(page.getByText('Day streak').locator('..')).toContainText('1')
-  await page.getByRole('button', { name: 'Add your name' }).click()
-  await page.getByLabel('What should we call you?').fill('Sam')
-  await page.getByRole('button', { name: 'Save' }).click()
   await expect(page.getByRole('heading', { name: 'Sam' })).toBeVisible()
+  await expect(page.getByRole('definition').filter({ hasText: /^Breast$/ })).toBeVisible()
 
   await mainNav.getByRole('link', { name: 'Home' }).click()
   await expect(page.getByText(/, Sam$/)).toBeVisible()
@@ -96,12 +107,18 @@ test('home loads, records a check-in and navigates via the tab bar', async ({ pa
     .getByRole('navigation', { name: 'Care sections' })
     .getByRole('link', { name: 'Shop' })
     .click()
+  await expect(page.getByRole('heading', { name: 'Picked for you' })).toBeVisible()
+  await expect(
+    page.getByRole('region', { name: 'Recovery essentials' }).getByRole('article').first(),
+  ).toContainText('For you')
   await page.getByRole('button', { name: 'Medicine refills' }).click()
   await expect(page.getByRole('link', { name: /Vitamin D on Tata 1mg/ })).toBeVisible()
 
   // Learn: open a guide and save it
   await mainNav.getByRole('link', { name: 'Learn' }).click()
-  await page.getByRole('link', { name: /Lymphoedema: signs/ }).click()
+  await page
+    .getByRole('link', { name: /^Lymphoedema: signs.*Chosen for your breast cancer/ })
+    .click()
   await expect(page.getByRole('heading', { name: 'Questions to ask your doctor' })).toBeVisible()
   await page.getByRole('button', { name: 'Save' }).click()
   await expect(page.getByRole('button', { name: 'Saved' })).toBeVisible()

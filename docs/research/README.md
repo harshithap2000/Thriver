@@ -17,6 +17,7 @@ key facts with primary sources, a regulatory lawyer and clinical advisers before
 | [03 – Business model & funding](03-business-model-and-funding.md)              | Business Model Canvas, monetisation options, grants, CSR, investors, the Tata question                                         |
 | [04 – MVP & regulation](04-mvp-and-regulation.md)                              | Proposed MVP scope, India's medical-device software, data protection, telemedicine and AI rules                                |
 | [05 – Brainstorm: day counter & Learn](05-brainstorm-day-counter-and-learn.md) | Creative ways to show days since surgery on Home; a Learn section with reviewed guides and Indian survivor stories             |
+| [06 – Accounts & log-in](06-accounts-and-login.md)                             | Plan for real accounts: phone OTP, sync, encrypted backup, consent and security                                                |
 
 ## The ten things to know
 

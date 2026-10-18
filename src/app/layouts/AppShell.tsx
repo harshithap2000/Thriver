@@ -1,5 +1,7 @@
 import type { ComponentType, SVGProps } from 'react'
-import { NavLink, Outlet, useMatch } from 'react-router'
+import { Navigate, NavLink, Outlet, useLocation } from 'react-router'
+
+import { useProfileStore } from '@/features/profile'
 
 import { BookIcon, CareIcon, FolderIcon, HomeIcon, ProfileIcon } from '@/shared/ui/icons'
 import { cn } from '@/shared/utils/cn'
@@ -14,8 +16,12 @@ const tabs: Array<{ to: string; label: string; Icon: ComponentType<SVGProps<SVGS
 
 /** Mobile-first app frame: scrollable content with a fixed bottom tab bar. */
 export function AppShell() {
-  // Family members writing a note shouldn't see the user's app navigation.
-  const isGuestPage = useMatch('/family/write') !== null
+  const { pathname } = useLocation()
+  const onboarded = useProfileStore((s) => s.onboarded)
+  // Pages without the app navigation: sign-up, and family members writing or opening a note.
+  const isGuestPage = ['/welcome', '/family/write', '/family/note'].includes(pathname)
+
+  if (!onboarded && !isGuestPage) return <Navigate to="/welcome" replace />
 
   return (
     <div className="bg-cream text-ink min-h-dvh font-sans">

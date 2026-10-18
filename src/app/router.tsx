@@ -33,6 +33,8 @@ export const routes: RouteObject[] = [
       { path: 'move', lazy: lazyPage(() => import('@/pages/MovePage')) },
       { path: 'journal', lazy: lazyPage(() => import('@/pages/JournalPage')) },
       { path: 'profile', lazy: lazyPage(() => import('@/pages/ProfilePage')) },
+      { path: 'profile/health', lazy: lazyPage(() => import('@/pages/HealthProfilePage')) },
+      { path: 'welcome', lazy: lazyPage(() => import('@/pages/WelcomePage')) },
       { path: 'posts', lazy: lazyPage(() => import('@/pages/PostsPage')) },
       { path: '*', lazy: lazyPage(() => import('@/pages/NotFoundPage')) },
     ],

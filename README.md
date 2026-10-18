@@ -41,6 +41,20 @@ Without a key, the assistant shows a "not set up yet" message and everything els
 When deploying (e.g. Netlify), the same handler in `server/recordsAssistant.ts` needs to run as a
 serverless function, and the endpoint should get authentication and rate limiting.
 
+## Personalisation and sign-up
+
+New users go through a short sign-up at `/welcome`: name, cancer type, treatments (and surgery date),
+conditions to watch for, and an opt-in for AI picks. Everything is stored on the device and can be
+changed under Profile › Your health profile. Real accounts (log in, sync between phones) need a
+backend; see [docs/research/06-accounts-and-login.md](docs/research/06-accounts-and-login.md).
+
+Learn guides and Shop items carry an `audience` (cancer types, conditions, treatments). Matching items
+come first with a "For you" badge, and items only for other cancers are hidden behind a toggle.
+"Picked for you" shows the top matches. If the person has turned on AI picks, the browser sends
+`/api/ai-picks` an anonymous profile (no name, no records) and the list of matching items. Claude
+picks and explains up to three of each, and the server drops any id that wasn't in that list. Without
+a key, or if the call fails, the profile-based picks are shown instead.
+
 ## Scripts
 
 | Script                         | What it does                                  |
@@ -68,6 +82,7 @@ src/
       hooks/          React Query hooks and query keys
       types.ts        Zod schemas and inferred types
       index.ts        Public API: the only file other modules may import
+    ai-picks/       "Picked for you" in Learn and Shop: profile rules, optionally ranked by Claude
     appointments/   Appointments calendar: month view, day list, upcoming, add/delete
     journal/        Journal with daily prompts, mood tags, search, edit/delete
     family/         Family notes delivered by shareable links (no server needed)
@@ -79,7 +94,7 @@ src/
     move/           Guided movement routines, activity log, daily goal and week chart
     mood-check-in/  Daily mood check-in, streak/stats and weekly mood (Zustand, persisted)
     records/        Health records saved on-device (IndexedDB) + AI records assistant
-    profile/        Profile header with editable display name (Zustand, persisted)
+    profile/        Sign-up (onboarding), health profile (cancer type, treatments, conditions), name
     shop/           Care › Shop: curated recovery essentials, refills, food, services (links out)
     splash/         Animated splash screen shown when the app opens
     theme/          Dark-mode store + toggle (not currently mounted)

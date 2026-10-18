@@ -1,6 +1,10 @@
 import type Anthropic from '@anthropic-ai/sdk'
 import { z } from 'zod'
 
+import { AssistantRequestError } from './errors.ts'
+
+export { AssistantRequestError }
+
 /**
  * Server half of the records assistant. The browser runs the agent loop (the documents live in
  * the browser's storage), and calls this endpoint for each model turn. The model, instructions
@@ -76,15 +80,6 @@ export interface AssistantResponse {
   content: Anthropic.Beta.BetaContentBlock[]
   stop_reason: Anthropic.Beta.BetaMessage['stop_reason']
   model: string
-}
-
-export class AssistantRequestError extends Error {
-  readonly status: number
-
-  constructor(status: number, message: string) {
-    super(message)
-    this.status = status
-  }
 }
 
 /** Validates the request and runs one model turn. */

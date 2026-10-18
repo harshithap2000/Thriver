@@ -1,3 +1,5 @@
+import type { Audience } from '@/features/profile'
+
 import type { StoreId } from './partners'
 
 export interface ShopItem {
@@ -14,11 +16,14 @@ export interface ShopItem {
   askFirst?: boolean
   /** Related Learn guide slug. */
   guide?: string
+  /** Who it's for; omitted means everyone. */
+  audience?: Audience
 }
 
 export const essentials: ShopItem[] = [
   {
     id: 'post-surgery-bra',
+    audience: { cancerTypes: ['breast'] },
     name: 'Post-surgery bra',
     emoji: '💗',
     tile: 'bg-move',
@@ -32,6 +37,7 @@ export const essentials: ShopItem[] = [
   },
   {
     id: 'breast-prosthesis',
+    audience: { cancerTypes: ['breast'] },
     name: 'Breast prosthesis',
     emoji: '🤍',
     tile: 'bg-sleep',
@@ -46,6 +52,7 @@ export const essentials: ShopItem[] = [
   },
   {
     id: 'compression-sleeve',
+    audience: { cancerTypes: ['breast'], conditions: ['lymphoedema'] },
     name: 'Compression sleeve',
     emoji: '💪',
     tile: 'bg-meditate',
@@ -61,6 +68,7 @@ export const essentials: ShopItem[] = [
   },
   {
     id: 'caps-scarves',
+    audience: { treatments: ['chemotherapy', 'radiotherapy'], conditions: ['hairLoss'] },
     name: 'Soft caps, scarves & wigs',
     emoji: '🧣',
     tile: 'bg-reflect',
@@ -71,6 +79,7 @@ export const essentials: ShopItem[] = [
   },
   {
     id: 'skin-care',
+    audience: { treatments: ['radiotherapy', 'chemotherapy', 'surgery'] },
     name: 'Gentle skin & scar care',
     emoji: '🧴',
     tile: 'bg-mint',
@@ -95,12 +104,14 @@ export const essentials: ShopItem[] = [
   },
   {
     id: 'ostomy',
+    audience: { cancerTypes: ['colorectal'], conditions: ['stoma'] },
     name: 'Ostomy supplies',
     emoji: '🩹',
     tile: 'bg-move',
     why: 'Bags, seals and skin care for people with a stoma.',
     tips: ['Use the type and size your stoma nurse recommends.'],
     searchTerm: 'ostomy bag',
+    guide: 'living-with-a-stoma',
     stores: ['tata1mg', 'amazon'],
     askFirst: true,
   },
@@ -130,12 +141,14 @@ export const foods: ShopItem[] = [
   },
   {
     id: 'soft-foods',
+    audience: { cancerTypes: ['head-neck', 'stomach'], conditions: ['swallowing'] },
     name: 'Soft, easy foods',
     emoji: '🥣',
     tile: 'bg-mint',
     why: 'Dalia, oats, suji and khichdi mixes are gentle on a sore mouth or low appetite.',
     tips: ['Add curd, paneer or dal to boost protein.'],
     searchTerm: 'broken wheat dalia',
+    guide: 'eating-with-a-sore-mouth',
     stores: ['bigbasket', 'amazon'],
   },
   {
