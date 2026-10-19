@@ -26,7 +26,9 @@ change often; check them before choosing.
 | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Phone number + one-time code (OTP)**    | **Recommended first.** Most familiar in India, no password to forget, works for older users and family helpers. SMS costs money per message.  |
 | WhatsApp OTP                              | A good second channel where SMS delivery is poor; needs a WhatsApp Business provider.                                                         |
-| Google sign-in                            | Easy for people with Android phones; offer it next to OTP.                                                                                    |
+| Google sign-in                            | **Recommended at launch.** One tap on Android phones; offer it next to OTP.                                                                   |
+| Apple sign-in                             | **Recommended at launch.** For iPhone users; required on the App Store alongside other social logins.                                         |
+| Facebook sign-in                          | Not at launch: it tells Meta someone uses a cancer app. See [backend architecture](../architecture/backend.md#sign-in-options).               |
 | Email + magic link                        | Useful for caregivers abroad; less common among older Indian users.                                                                           |
 | Password                                  | Avoid: forgotten passwords are a support burden and a security risk.                                                                          |
 | **ABHA (Ayushman Bharat Health Account)** | Later: log in or link ABHA to pull records via ABDM. Needs ABDM sandbox approval (see [04](04-mvp-and-regulation.md#25-abdm-and-digilocker)). |

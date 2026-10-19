@@ -94,6 +94,36 @@ sequenceDiagram
   App->>App: upload local data (first sync), keep working offline
 ```
 
+### Sign-in options
+
+The sign-up screen offers, in this order: **Continue with Google**, **Continue with Apple** and
+**Continue with phone number**. All three are built into Supabase Auth (`signInWithOAuth` and
+`signInWithOtp`), so they share one account system, one session format and the same row-level
+security.
+
+| Option       | Use it?                   | Notes                                                                                                                                                                                                                                                                                                                                                                              |
+| ------------ | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Google       | **Yes, first**            | Most Indian users are on Android and already signed in to Google, so it's one tap. Ask only for name and email.                                                                                                                                                                                                                                                                    |
+| Apple        | **Yes**                   | Needed for iPhone users, and required by App Store guideline 4.8 once the app ships on iOS with other social logins. "Hide my email" relay addresses must work. Needs the Apple Developer Program. For the web flow, Apple requires the client secret to be **regenerated at least every 6 months**, or sign-in silently stops working: put it in the ops calendar or automate it. |
+| Phone OTP    | **Yes**                   | For people without a Google or Apple account they know, older users and caregivers. Needs DLT registration (see above).                                                                                                                                                                                                                                                            |
+| Facebook     | **Not at launch**         | Technically easy, but signing in with Facebook tells Meta that someone uses a cancer app, which many patients won't want. Live mode also needs Meta app review and possibly business verification. Revisit only if users ask for it, and never add the Facebook SDK or tracking pixels.                                                                                            |
+| Email + link | Clinicians and caregivers | Magic link, no password.                                                                                                                                                                                                                                                                                                                                                           |
+
+- **One person, one account.** Supabase links identities that share a **verified** email
+  automatically, so Google and Apple sign-ins with the same email land in the same account. A phone
+  number can't be matched that way, so Profile gets "Add another way to sign in", and the sign-in
+  screen tells people which method they used before on this device. Supabase's manual linking is a
+  beta feature, and a security report from 2026 described an account-takeover risk with it. Check
+  that it's fixed before enabling it, and only link identities whose email the provider has
+  verified.
+- **Shared family phones.** The Google button can pick up a relative's account. The account
+  chooser is always shown (`prompt=select_account`), with the line "Choose your own account".
+- **Data minimisation.** Only name and email are requested from Google or Apple, never contacts,
+  photos or other scopes. The name only pre-fills the "Your name" step and can be changed.
+- **Native apps later.** If Thriver is wrapped as an Android or iOS app, use the platforms' native
+  sign-in sheets (Credential Manager on Android, Sign in with Apple on iOS). Apple's native flow
+  doesn't need the 6-month secret rotation.
+
 - **Roles** live in the JWT as a custom claim (`patient`, `clinician`, `org_admin`, `content_editor`).
   Patients are the default.
 - **Clinicians** sign in by email magic link to the clinic portal after an invitation from their
@@ -355,8 +385,15 @@ and runs the RLS tests, unit tests and e2e tests before deploying.
    signed-in clinician from a linked hospital? Recommended: allow them in the pilot, and show the
    assurance level on the summary.
 4. **API host.** Google Cloud Run in Mumbai (recommended) or AWS `ap-south-1`.
+5. **Sign-in methods.** Recommended: Google, Apple and phone OTP at launch; no Facebook for now.
 
 ## Sources
+
+- [Supabase: Login with Apple](https://supabase.com/docs/guides/auth/social-login/auth-apple) (6-month secret rotation for the web flow)
+- [Supabase: Identity linking](https://supabase.com/docs/guides/auth/auth-identity-linking) and the
+  [manual linking report ANT-2026-7WJV60DR](https://red.anthropic.com/2026/cvd/findings/ANT-2026-7WJV60DR)
+- [Apple guideline 4.8 discussion](https://developer.apple.com/forums/thread/765145)
+- [Meta: Facebook Login use case](https://developers.facebook.com/docs/development/create-an-app/facebook-login-use-case)
 
 - [Supabase regions](https://supabase.com/docs/guides/platform/regions) (South Asia, Mumbai, `ap-south-1`)
 - [Supabase Send SMS hook](https://supabase.com/docs/guides/auth/auth-hooks/send-sms-hook.md) (use a regional SMS provider)
