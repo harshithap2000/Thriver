@@ -46,7 +46,8 @@ serverless function, and the endpoint should get authentication and rate limitin
 New users go through a short sign-up at `/welcome`: name, cancer type, treatments (and surgery date),
 conditions to watch for, and an opt-in for AI picks. Everything is stored on the device and can be
 changed under Profile › Your health profile. Real accounts (log in, sync between phones) need a
-backend; see [docs/research/06-accounts-and-login.md](docs/research/06-accounts-and-login.md).
+backend; see [docs/architecture/backend.md](docs/architecture/backend.md) and
+[docs/research/06-accounts-and-login.md](docs/research/06-accounts-and-login.md).
 
 Learn guides and Shop items carry an `audience` (cancer types, conditions, treatments). Matching items
 come first with a "For you" badge, and items only for other cancers are hidden behind a toggle.

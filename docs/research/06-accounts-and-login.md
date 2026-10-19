@@ -72,6 +72,8 @@ OTP. Either works with the planned Netlify hosting; the AI endpoints move to ser
 
 ## Steps
 
+The full design is in [docs/architecture/backend.md](../architecture/backend.md).
+
 1. Pick the provider and region; set up Netlify functions for the two AI endpoints.
 2. Phone OTP log-in screen ("Back up and sync" from Profile and the welcome screen).
 3. Sync the profile; then medication, appointments and journal.
