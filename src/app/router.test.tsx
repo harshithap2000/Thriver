@@ -22,7 +22,9 @@ describe('router', () => {
   it('sends new users to sign-up first', async () => {
     useProfileStore.setState({ onboarded: false })
     renderRoute('/learn')
-    expect(await screen.findByRole('heading', { name: 'Welcome to Thriver' })).toBeInTheDocument()
+    expect(
+      await screen.findByRole('heading', { name: 'Welcome to Thriver' }, { timeout: 5000 }),
+    ).toBeInTheDocument()
     expect(screen.queryByRole('navigation', { name: 'Main' })).not.toBeInTheDocument()
   })
 

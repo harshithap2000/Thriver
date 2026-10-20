@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 
 import { Button } from '@/shared/ui/Button'
 import { inputClass } from '@/shared/ui/Field'
@@ -56,12 +56,21 @@ function Step({
   )
 }
 
-/** First-run sign-up. Everything is stored on this device until accounts launch. */
-export function Onboarding() {
+interface Props {
+  /** Accounts (sign-in and backup) are available in this version. */
+  accountsEnabled?: boolean
+  /** Start at a later step, e.g. 1 after signing in with a new account. */
+  startStep?: number
+  /** Pre-fills the name step, e.g. from Google or Apple. */
+  suggestedName?: string
+}
+
+/** First-run sign-up. Answers are kept on this device (and backed up when signed in). */
+export function Onboarding({ accountsEnabled = false, startStep = 0, suggestedName = '' }: Props) {
   const navigate = useNavigate()
   const store = useProfileStore()
-  const [step, setStep] = useState(0)
-  const [name, setName] = useState(store.name)
+  const [step, setStep] = useState(startStep)
+  const [name, setName] = useState(store.name || suggestedName.split(' ')[0] || '')
   const [health, setHealth] = useState<HealthProfile>(store.health ?? emptyHealth)
   const [ai, setAi] = useState(store.aiPersonalise)
 
@@ -95,10 +104,19 @@ export function Onboarding() {
           <Button onClick={() => setStep(1)} className="bg-pine hover:bg-ink w-full py-4 text-base">
             Get started
           </Button>
-          <p className="text-ink-muted rounded-2xl bg-white p-4 text-center text-sm shadow-sm">
-            <b className="text-ink">Already use Thriver on another phone?</b> Signing in and syncing
-            between phones is coming soon. For now, everything stays on this phone.
-          </p>
+          {accountsEnabled ? (
+            <Link
+              to="/sign-in?next=/"
+              className="text-ink border-ink-muted/25 block w-full rounded-md border bg-white py-4 text-center font-semibold"
+            >
+              I already have an account
+            </Link>
+          ) : (
+            <p className="text-ink-muted rounded-2xl bg-white p-4 text-center text-sm shadow-sm">
+              <b className="text-ink">Already use Thriver on another phone?</b> Signing in and
+              syncing between phones is coming soon. For now, everything stays on this phone.
+            </p>
+          )}
         </div>
       </section>
     )

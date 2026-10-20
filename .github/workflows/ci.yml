@@ -44,3 +44,26 @@ jobs:
           name: playwright-report
           path: playwright-report
           retention-days: 7
+
+  supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:start
+      - run: pnpm db:test
+      - name: Export local Supabase settings
+        run: |
+          eval "$(pnpm exec supabase status -o env)"
+          echo "SUPABASE_TEST_URL=$API_URL" >> "$GITHUB_ENV"
+          echo "SUPABASE_TEST_KEY=$PUBLISHABLE_KEY" >> "$GITHUB_ENV"
+          echo "VITE_SUPABASE_URL=$API_URL" >> "$GITHUB_ENV"
+          echo "VITE_SUPABASE_PUBLISHABLE_KEY=$PUBLISHABLE_KEY" >> "$GITHUB_ENV"
+      - run: pnpm vitest run src/features/account/sync/remote.integration.test.ts
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e e2e/sync.spec.ts

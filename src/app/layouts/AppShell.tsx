@@ -18,8 +18,15 @@ const tabs: Array<{ to: string; label: string; Icon: ComponentType<SVGProps<SVGS
 export function AppShell() {
   const { pathname } = useLocation()
   const onboarded = useProfileStore((s) => s.onboarded)
-  // Pages without the app navigation: sign-up, and family members writing or opening a note.
-  const isGuestPage = ['/welcome', '/family/write', '/family/note'].includes(pathname)
+  // Pages without the app navigation: sign-up and sign-in, and family members writing or
+  // opening a note.
+  const isGuestPage = [
+    '/welcome',
+    '/sign-in',
+    '/auth/callback',
+    '/family/write',
+    '/family/note',
+  ].includes(pathname)
 
   if (!onboarded && !isGuestPage) return <Navigate to="/welcome" replace />
 

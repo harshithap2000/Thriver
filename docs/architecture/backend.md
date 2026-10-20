@@ -231,20 +231,33 @@ another hospital, or another patient, provably can't read a row.
 
 ## 6. Sync
 
-The phone keeps its Zustand stores. A new `src/features/sync` engine maps store entries to rows and
-back. No conflict-free data types (CRDTs) are needed: one person edits their own data on a few
-devices.
+**Implemented** (phase 1): `src/features/account/sync`, `supabase/migrations/*_sync_items.sql`.
 
-- **Push:** changed rows are upserted by `id`. A database trigger keeps whichever edit has the later
-  `client_updated_at` (last write wins per row), and soft deletes win over edits.
-- **Pull:** for each table, fetch rows with `updated_at > cursor`, merge them into the store, and
-  save the new cursor. This runs on app start, on reconnect, and every few minutes while the app is
-  open.
-- **First sync:** local data is uploaded. If the account already has data (a new phone), the two are
-  merged by `id`, and the person sees "Restored from your backup".
-- **Records files** upload in the background through a resumable upload to
-  `records/{user_id}/{record_id}` and download on demand. The phone keeps them cached for offline use.
-- **Day-keyed stores** (check-ins, mood, plan ticks) map to `unique (user_id, day)` rows.
+The phone keeps its Zustand stores, persisted on the device. They are the local cache: every screen
+reads from them, so the app is instant and works offline. The sync engine reconciles them with
+Supabase in the background. No conflict-free data types (CRDTs) are needed: one person edits their
+own data on a few devices.
+
+- **One table for now.** Phase 1 stores every synced item in `sync_items` as `(user_id, kind, key,
+data jsonb)`, e.g. `('check_in', '2026-10-20', {...})`. Each store gets a small adapter
+  (`sync/registry.ts`), so adding a store to sync is one line and needs no migration. When the
+  hospital pilot needs SQL over specific data (phase 3), those kinds get typed tables or views.
+- **Push:** the engine keeps a "shadow" copy of what was last synced and uploads only items that
+  differ from it, including tombstones for deleted items. A database trigger keeps whichever edit
+  has the later `client_updated_at` (last write wins per item), and caps phone clocks that are more
+  than 5 minutes ahead.
+- **Pull:** fetch rows with `updated_at` at or after the cursor (minus a 10-second overlap, so rows
+  committed slightly out of order aren't missed). A remote change is applied only if the item has no
+  unsynced local edit; otherwise the local edit is pushed next round.
+- **When:** 1.5 s after a local change, when the app comes back into view or online, every minute
+  while it's open, and from "Back up now" in Profile.
+- **First sync on a device:** the backup wins for items on both sides, and items only on the device
+  are uploaded. A device holding another account's data never syncs: the person chooses to clear
+  it or sign out.
+- **Not synced yet:** records files, journal entries and family notes, until the vault (section 7)
+  encrypts them. The app says so in Profile and the privacy centre.
+- **Later:** records files upload in the background through a resumable upload to
+  `records/{user_id}/{record_id}` and download on demand.
 
 ## 7. Encryption
 
@@ -353,8 +366,7 @@ supabase/
   migrations/         SQL migrations (tables, RLS, triggers)
   tests/              pgTAP tests for every RLS policy
   seed.sql            local test data
-src/features/account/ Log-in screen ("Back up and sync"), account settings
-src/features/sync/    Sync engine (store ⇄ table mappers, cursors, file upload queue)
+src/features/account/ Sign-in, account card, sync engine (sync/)
 apps/clinic/          Clinic portal (phase 3)
 ```
 

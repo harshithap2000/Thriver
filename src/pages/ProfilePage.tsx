@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 
+import { AccountCard } from '@/features/account'
 import { CheckInStats, ClearHistoryButton, MoodWeek } from '@/features/mood-check-in'
 import { HealthProfileCard, ProfileHeader } from '@/features/profile'
 import { ChevronRightIcon } from '@/shared/ui/icons'
@@ -23,6 +24,8 @@ export default function ProfilePage() {
   return (
     <div className="space-y-7">
       <ProfileHeader />
+
+      <AccountCard />
 
       <section aria-labelledby="health-title" className="space-y-3">
         <h2 id="health-title" className="text-ink font-bold">
@@ -75,9 +78,7 @@ export default function ProfilePage() {
         </h2>
         <div className="divide-cream divide-y overflow-hidden rounded-3xl bg-white shadow-sm">
           <ClearHistoryButton className="text-move-ink hover:bg-move/30 disabled:text-ink-muted/50 w-full px-5 py-4 text-left font-semibold disabled:cursor-not-allowed disabled:hover:bg-transparent" />
-          <p className="text-ink-muted px-5 py-4 text-sm">
-            Thriver v{__APP_VERSION__} · Your data stays on this device.
-          </p>
+          <p className="text-ink-muted px-5 py-4 text-sm">Thriver v{__APP_VERSION__}</p>
         </div>
       </section>
     </div>

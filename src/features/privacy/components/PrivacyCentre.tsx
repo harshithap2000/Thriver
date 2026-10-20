@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
 
+import { useAuthStore } from '@/features/account'
 import { useProfileStore } from '@/features/profile'
 import { useAssistantConsent } from '@/features/records'
 import { ChevronLeftIcon, DownloadIcon } from '@/shared/ui/icons'
@@ -17,6 +18,7 @@ interface Props {
 /** What Thriver stores and shares, consents with withdraw, export and delete. */
 export function PrivacyCentre({ onDeleted = () => window.location.replace('/welcome') }: Props) {
   const assistant = useAssistantConsent()
+  const signedIn = useAuthStore((s) => s.status === 'signedIn')
   const { aiPersonalise, aiConsentAt, setAiPersonalise } = useProfileStore()
   const [confirming, setConfirming] = useState(false)
   const [busy, setBusy] = useState<'' | 'export' | 'delete'>('')
@@ -41,11 +43,17 @@ export function PrivacyCentre({ onDeleted = () => window.location.replace('/welc
     try {
       if (kind === 'export') await downloadAllData()
       else {
-        await deleteEverything()
+        await deleteEverything({ signedIn })
         onDeleted()
       }
     } catch {
-      setError(kind === 'export' ? 'Couldn’t prepare your data.' : 'Couldn’t delete everything.')
+      setError(
+        kind === 'export'
+          ? 'Couldn’t prepare your data.'
+          : signedIn
+            ? 'Couldn’t delete your account. Check your connection and try again.'
+            : 'Couldn’t delete everything.',
+      )
     } finally {
       setBusy('')
     }
@@ -65,11 +73,13 @@ export function PrivacyCentre({ onDeleted = () => window.location.replace('/welc
       </header>
 
       <section className="space-y-2 rounded-3xl bg-white p-5 shadow-sm">
-        <h2 className="text-ink text-lg font-bold">📱 Stored only on this phone</h2>
+        <h2 className="text-ink text-lg font-bold">📱 Stored on this phone</h2>
         <p className="text-ink-muted text-sm">
           Your profile, records, check-ins, medications, appointments, journal, activity and family
-          notes. Thriver has no server copy, so clearing this browser or losing the phone loses
-          them. Export a copy below.
+          notes.{' '}
+          {signedIn
+            ? 'Because you’re signed in, your profile, check-ins, recovery plan, medication, appointments, activity and saved guides are also backed up to your private account. Records, journal entries and family notes stay on this phone only.'
+            : 'You’re not signed in, so there is no backup: clearing this browser or losing the phone loses them. Export a copy below, or sign in from Profile to back up.'}
         </p>
       </section>
 
@@ -148,11 +158,14 @@ export function PrivacyCentre({ onDeleted = () => window.location.replace('/welc
           className="bg-move space-y-3 rounded-3xl p-5"
         >
           <h2 id="delete-title" className="text-ink font-bold">
-            Delete everything from this phone?
+            {signedIn
+              ? 'Delete your account and everything?'
+              : 'Delete everything from this phone?'}
           </h2>
           <p className="text-ink text-sm">
-            This removes your profile, records and all your entries. It can’t be undone. Export a
-            copy first if you might want it.
+            This removes your profile, records and all your entries
+            {signedIn ? ', and deletes your account and its backup' : ''}. It can’t be undone.
+            Export a copy first if you might want it.
           </p>
           <div className="grid grid-cols-2 gap-3">
             <button
@@ -178,7 +191,7 @@ export function PrivacyCentre({ onDeleted = () => window.location.replace('/welc
           onClick={() => setConfirming(true)}
           className="text-move-ink border-move w-full rounded-2xl border-2 bg-white py-3.5 font-bold"
         >
-          Delete everything from this phone
+          {signedIn ? 'Delete my account and all my data' : 'Delete everything from this phone'}
         </button>
       )}
 

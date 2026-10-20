@@ -22,6 +22,13 @@ cp .env.example .env.local   # optional; defaults are provided
 pnpm dev                     # http://localhost:5173
 ```
 
+## Accounts and backup (optional)
+
+Sign-in (Google, Apple, phone number) and backup/sync use [Supabase](https://supabase.com). Without
+it the app runs on-device only. Locally: `pnpm db:start` (needs Docker), then put the printed API URL
+and publishable key in `.env.local` as `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`.
+Step-by-step setup, including the hosted project and Google/Apple: [docs/setup/supabase.md](docs/setup/supabase.md).
+
 ## Records assistant (optional)
 
 The Records tab includes an assistant, powered by Claude (`claude-opus-5-5`), that can search and explain
@@ -45,9 +52,9 @@ serverless function, and the endpoint should get authentication and rate limitin
 
 New users go through a short sign-up at `/welcome`: name, cancer type, treatments (and surgery date),
 conditions to watch for, and an opt-in for AI picks. Everything is stored on the device and can be
-changed under Profile › Your health profile. Real accounts (log in, sync between phones) need a
-backend; see [docs/architecture/backend.md](docs/architecture/backend.md) and
-[docs/research/06-accounts-and-login.md](docs/research/06-accounts-and-login.md).
+changed under Profile › Your health profile. When Supabase is configured, people can sign in and
+their data is backed up and synced (see [docs/setup/supabase.md](docs/setup/supabase.md) and
+[docs/architecture/backend.md](docs/architecture/backend.md)).
 
 Learn guides and Shop items carry an `audience` (cancer types, conditions, treatments). Matching items
 come first with a "For you" badge, and items only for other cancers are hidden behind a toggle.
@@ -97,6 +104,7 @@ src/
       hooks/          React Query hooks and query keys (for server data)
       use…Store.ts    Zustand store for on-device data
       index.ts        Public API: the only file other modules may import
+    account/        Sign-in (Google, Apple, phone), account card, local-first sync engine (sync/)
     ai-picks/       "Picked for you" in Learn and Shop: profile rules, optionally ranked by Claude
     appointments/   Appointments calendar: month view, day list, upcoming, add/delete
     journal/        Journal with daily prompts, mood tags, search, edit/delete
@@ -124,6 +132,7 @@ src/
     utils/          Pure helpers
   test/           Test setup and render helpers
 e2e/              Playwright tests
+supabase/         Supabase config, SQL migrations and database tests (pgTAP)
 ```
 
 ## Conventions

@@ -1,10 +1,14 @@
-import { allFiles, deleteAllFiles } from '@/features/records'
+import { deleteAccountEverywhere, STORAGE_PREFIX, wipeLocalData } from '@/features/account'
+import { allFiles } from '@/features/records'
+import { AUTH_STORAGE_KEY } from '@/shared/lib/supabase'
 
-/** Every app setting and entry lives in localStorage under this prefix. */
-const PREFIX = 'thriver-'
+/** Bookkeeping that isn't the person's data: the sign-in session and sync state. */
+const NOT_EXPORTED = new Set([AUTH_STORAGE_KEY, 'thriver-sync'])
 
 function storedKeys() {
-  return Object.keys(localStorage).filter((k) => k.startsWith(PREFIX))
+  return Object.keys(localStorage).filter(
+    (k) => k.startsWith(STORAGE_PREFIX) && !NOT_EXPORTED.has(k),
+  )
 }
 
 const blobToDataUrl = (blob: Blob) =>
@@ -42,8 +46,11 @@ export async function downloadAllData() {
   setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
 
-/** Removes all of Thriver's data from this device. */
-export async function deleteEverything() {
-  for (const key of storedKeys()) localStorage.removeItem(key)
-  await deleteAllFiles()
+/**
+ * Removes all of Thriver's data from this device, and when signed in also the account and its
+ * backup on the server.
+ */
+export async function deleteEverything({ signedIn = false } = {}) {
+  if (signedIn) await deleteAccountEverywhere()
+  else await wipeLocalData()
 }

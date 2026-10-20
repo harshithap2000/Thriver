@@ -18,7 +18,11 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:start": "supabase start -x studio,imgproxy,edge-runtime,logflare,vector,supavisor,realtime",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase db reset",
+    "db:test": "supabase test db"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
@@ -31,6 +35,7 @@
     "@anthropic-ai/sdk": "^0.135.0",
     "@fontsource-variable/nunito": "^5.3.0",
     "@fontsource/jost": "^5.3.0",
+    "@supabase/supabase-js": "^2.118.0",
     "@tanstack/react-query": "^5.104.3",
     "idb-keyval": "^6.3.0",
     "react": "^19.3.1",
@@ -62,6 +67,7 @@
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
+    "supabase": "^2.121.0",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.71.2",

@@ -40,6 +40,8 @@ export const routes: RouteObject[] = [
       { path: 'profile/privacy', lazy: lazyPage(() => import('@/pages/PrivacyPage')) },
       { path: 'profile/summary', lazy: lazyPage(() => import('@/pages/SummaryPage')) },
       { path: 'welcome', lazy: lazyPage(() => import('@/pages/WelcomePage')) },
+      { path: 'sign-in', lazy: lazyPage(() => import('@/pages/SignInPage')) },
+      { path: 'auth/callback', lazy: lazyPage(() => import('@/pages/AuthCallbackPage')) },
       { path: '*', lazy: lazyPage(() => import('@/pages/NotFoundPage')) },
     ],
   },
