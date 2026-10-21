@@ -25,7 +25,8 @@ pnpm db:start          # starts Postgres, Auth and the API in Docker; applies th
 pnpm exec supabase status -o env   # shows API_URL and PUBLISHABLE_KEY
 ```
 
-Put those two values in `.env.local`:
+By default the app uses the hosted project (`.env.development`). To use the local stack instead,
+put those two values in `.env.local`, which overrides it:
 
 ```bash
 VITE_SUPABASE_URL=http://127.0.0.1:54321
@@ -56,7 +57,12 @@ Changing the database: `pnpm exec supabase migration new <name>`, write SQL in t
 Every new table must enable row-level security and have tests proving one user can't see another's
 rows.
 
-## 2. Create the hosted project
+## 2. The hosted project
+
+**Done for Thriver:** project ref `dxkifedajeginynxubfd`
+(`https://dxkifedajeginynxubfd.supabase.co`). Its URL and publishable key are in
+`.env.development` and `.env.production`, so `pnpm dev` and production builds use it. For a new
+project, the steps were:
 
 1. Sign in at [supabase.com](https://supabase.com) and create an organisation for Thriver.
 2. **New project**: name `thriver`, region **South Asia (Mumbai)**, a strong database password
@@ -69,13 +75,20 @@ rows.
 
 ## 3. Create the database tables
 
+From the repo folder on your computer:
+
 ```bash
-pnpm exec supabase login
-pnpm exec supabase link --project-ref <your-project-ref>   # the id in your project URL
-pnpm exec supabase db push                                  # applies supabase/migrations
+pnpm exec supabase login   # opens the browser to authorise the CLI
+pnpm db:link               # links to dxkifedajeginynxubfd; asks for the database password
+pnpm db:push               # applies supabase/migrations to the hosted database
 ```
 
-In the dashboard, **Table Editor → sync_items** should show the table with RLS enabled.
+Alternatively, open **SQL Editor** in the dashboard, paste the contents of
+`supabase/migrations/20261020053029_sync_items.sql` and run it once. (Then use `db:push` for
+future migrations: it records which ones have run.)
+
+In the dashboard, **Table Editor → sync_items** should show the table with RLS enabled. Don't run
+`supabase config push`: Auth settings for the hosted project are managed in the dashboard.
 
 ## 4. Sign-in settings
 

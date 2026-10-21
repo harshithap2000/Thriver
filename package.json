@@ -22,7 +22,9 @@
     "db:start": "supabase start -x studio,imgproxy,edge-runtime,logflare,vector,supavisor,realtime",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
-    "db:test": "supabase test db"
+    "db:test": "supabase test db",
+    "db:link": "supabase link --project-ref dxkifedajeginynxubfd",
+    "db:push": "supabase db push"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [

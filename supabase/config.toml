@@ -1,3 +1,6 @@
+# Local development settings for `pnpm db:start`. The hosted project's Auth settings (providers,
+# SMS, redirect URLs) are managed in the Supabase dashboard: don't run `supabase config push`, which
+# would copy local-only values such as the placeholder SMS provider below to the hosted project.
 # For detailed configuration reference documentation, visit:
 # https://supabase.com/docs/guides/local-development/cli/config
 # A string used to distinguish different Supabase projects on the same host. Defaults to the
